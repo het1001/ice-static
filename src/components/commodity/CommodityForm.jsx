@@ -169,6 +169,15 @@ const CommodityForm = React.createClass({
                     <Input placeholder="输入促销方式" size="default" />
                   )}
                 </FormItem>
+                <FormItem
+                    label="条形码"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
+                >
+                  {getFieldDecorator('barCode')(
+                      <Input placeholder="输入条形码" size="default" />
+                  )}
+                </FormItem>
               </Col>
               <Col span={10}>
                 <FormItem
@@ -272,6 +281,9 @@ export default Form.create({
       },
       personType:  {
         value : com.personType || '',
+      },
+      barCode:  {
+        value : com.barCode || '',
       },
       fileKey:  {
         value : com.imgKey || '',
