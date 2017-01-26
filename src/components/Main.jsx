@@ -3,6 +3,7 @@ import { Menu, Icon } from 'antd';
 import CommodityList from './commodity/CommodityList';
 import ComInList from './commodityIn/ComInList';
 import NewOrder from './order/NewOrder';
+import UserList from './user/UserList';
 
 const Main = React.createClass({
   getInitialState() {
@@ -20,14 +21,17 @@ const Main = React.createClass({
     let page = <span>功能建设中，敬请期待... ...</span>;
     switch (this.state.pageKey) {
       case 'commodity_list':
-        page = <CommodityList />
-        break;
+          page = <CommodityList />
+          break;
       case 'commodityIn_list':
-        page = <ComInList />
-        break;
+          page = <ComInList />
+          break;
       case 'new_order':
-        page = <NewOrder />
-        break;
+          page = <NewOrder />
+          break;
+      case 'person':
+          page = <UserList />
+          break;
 
       default:
     }
