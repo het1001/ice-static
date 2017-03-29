@@ -25,7 +25,8 @@ const ComInDialog = React.createClass({
   },
 
   handleOk() {
-    const comIns = this.refs.comIn.getForm().getFieldValue('comIns');
+    const comIns = this.refs.comIn.getFieldValue('comIns');
+
     for (const i in comIns) {
       if (!comIns[i].comId) {
         message.error("第" + comIns[i].key + "个商品为空");

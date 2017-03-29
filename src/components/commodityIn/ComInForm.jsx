@@ -131,6 +131,8 @@ const ComInForm = React.createClass({
       wrapperCol: { span: 20, offset: 4 },
     };
 
+    const { getFieldDecorator } = this.props.form;
+
     const formItems = this.state.comInArray.map((comIn, index) => {
       return (
       <Row gutter={16}>
@@ -211,6 +213,9 @@ const ComInForm = React.createClass({
       <Form horizontal>
         {formItems}
         <FormItem {...formItemLayoutWithOutLabel}>
+            {getFieldDecorator('comIns')(
+                <Input type="hidden" />
+            )}
           <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
             <Icon type="plus" /> 添加
           </Button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Alert, message } from 'antd';
+import { Alert } from 'antd';
 import MyMenu from '../components/MyMenu';
 import Main from '../components/Main';
 
