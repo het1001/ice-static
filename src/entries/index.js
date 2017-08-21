@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Alert } from 'antd';
+import { Alert, message } from 'antd';
 import MyMenu from '../components/MyMenu';
 import Main from '../components/Main';
 
@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   handleLoginout() {
-    window.location = '/ice/loginout.htm';
+    window.location = '/ice/pc/loginout.htm';
   }
 
   render() {

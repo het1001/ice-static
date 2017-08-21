@@ -11,7 +11,7 @@ const CommoditySelect = React.createClass({
   },
   componentWillMount() {
     Ajax({
-      url: '/ice/commodity/queryAll.json',
+      url: '/ice/pc/commodity/queryAll.json',
       param: {},
       callback: (result) => {
         if (result.success) {

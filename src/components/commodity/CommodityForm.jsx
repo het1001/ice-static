@@ -3,7 +3,7 @@ import { Form, Input, InputNumber, Row, Col, Modal, Upload } from 'antd';
 const FormItem = Form.Item;
 import Ajax from '../../util/Ajax';
 import styles from './CommodityForm.less';
-import FileUpload from './FileUpload';
+import FileUpload from '../FileUpload';
 
 const CommodityForm = React.createClass({
   getInitialState() {
@@ -48,7 +48,7 @@ const CommodityForm = React.createClass({
     }
 
     Ajax({
-      url: '/ice/commodity/check.json',
+      url: '/ice/pc/commodity/check.json',
       param: {
         id: this.props.com.id,
         name: value
@@ -99,7 +99,7 @@ const CommodityForm = React.createClass({
                     rules: [
                       { required: true, message: '名称不能为空' },
                       { validator: (rule, value, callback) => {
-                          if (value.length > 45) {
+                          if (value && value.length > 45) {
                             callback([new Error('长度不能超过45')]);
                           } else {
                             this.checkName(value, callback);
@@ -124,8 +124,6 @@ const CommodityForm = React.createClass({
                           if (value.length > 20) {
                             callback([new Error('长度不能超过20')]);
                           } else {
-                            console.log(value);
-
                             this.setState({
                               standardPice: Number(value)
                             }, this.count);
@@ -243,7 +241,7 @@ const CommodityForm = React.createClass({
               wrapperCol={{ span: 2 }}
             >
               {getFieldDecorator('fileKey')(
-                <FileUpload callback={this.handleFileUpload}  />
+                <FileUpload callback={this.handleFileUpload} />
               )}
             </FormItem>
           </Col>

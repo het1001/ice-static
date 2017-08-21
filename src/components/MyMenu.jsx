@@ -13,6 +13,8 @@ const subMenus = {
   all_order: ['sub2'],
   person: ['sub3'],
   position: ['sub3'],
+  dist_set: ['sub4'],
+  main_img_set: ['sub4'],
 }
 
 const MyMenu = React.createClass({
@@ -30,11 +32,12 @@ const MyMenu = React.createClass({
   },
   render() {
     return (
-      <Menu onClick={this.handleClick}
-            style={{ width: 240, float: 'left'}}
-            defaultOpenKeys={subMenus[this.state.current]}
-            selectedKeys={this.state.current}
-            mode="inline"
+      <Menu
+          onClick={this.handleClick}
+          style={{ width: 240, float: 'left'}}
+          defaultOpenKeys={subMenus[this.state.current]}
+          selectedKeys={this.state.current}
+          mode="inline"
       >
         <SubMenu key="sub1" title={<span><Icon type="appstore-o" /><span>商品管理</span></span>}>
           <Menu.Item key="commodity_list"><Icon type="bars" />商品列表</Menu.Item>
@@ -54,6 +57,7 @@ const MyMenu = React.createClass({
         </SubMenu>
         <SubMenu key="sub4" title={<span><Icon type="setting" /><span>系统设置</span></span>}>
           <Menu.Item key="dist_set"><Icon type="phone" />配送设置</Menu.Item>
+          <Menu.Item key="main_img_set"><Icon type="tablet" />APP广告设置</Menu.Item>
           <SubMenu key="sub5" title="其他">
             <Menu.Item key="7">Option 7</Menu.Item>
             <Menu.Item key="8">Option 8</Menu.Item>

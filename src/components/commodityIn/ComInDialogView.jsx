@@ -14,7 +14,7 @@ const ComInDialogView = React.createClass({
 
   fetch() {
     Ajax({
-      url: '/ice/commodityIn/queryDetail.json',
+      url: '/ice/pc/commodityIn/queryDetail.json',
       param: {
         inId: this.props.inId
       },

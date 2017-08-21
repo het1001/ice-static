@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Input, Icon } from 'antd';
+import { Alert, Button, Form, Input, message, Icon } from 'antd';
 const createForm = Form.create;
 const FormItem = Form.Item;
 
@@ -44,7 +44,7 @@ const Login = React.createClass({
       }
 
       Ajax({
-        url: '/ice/user/login.json',
+        url: '/ice/pc/user/login.json',
         method: 'post',
         param: {
           type: 'BIZ',
@@ -53,7 +53,7 @@ const Login = React.createClass({
         },
         callback: (result) => {
           if (result.success) {
-            window.location = '/ice/index.htm'
+            window.location = '/ice/pc/index.htm'
           } else {
             this.setState({
               nameError: result.errorMsg
@@ -61,9 +61,6 @@ const Login = React.createClass({
           }
         },
       });
-
-      console.log('Submit!!!');
-      console.log(values);
     });
   },
 

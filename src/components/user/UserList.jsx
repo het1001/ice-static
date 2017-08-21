@@ -1,226 +1,260 @@
 import React from 'react';
-import { Table, Icon, Button, Popconfirm, message } from 'antd';
+import {Table, message, Popconfirm} from 'antd';
 import Ajax from '../../util/Ajax';
+import SearchBar from './SearchBar';
+import CommonUtil from '../../util/CommonUtil';
+
+import UserShowDialog from './UserShowDialog';
+import UserAuditDialog from './UserAuditDialog';
 
 const UserList = React.createClass({
-  getInitialState() {
-    return {
-      data: [],
-      pagination: {
-        current: 1,
-        total: 0,
-      },
-      name: '',
-      brand: '',
-      status: '',
-      loading: true,
-      com: {},
-    };
-  },
-  componentWillMount() {
-    this.fetch();
-  },
-  fetch() {
-    this.setState({
-      loading: true
-    });
+    getInitialState() {
+        return {
+            data: [],
+            pagination: {
+                current: 1,
+                total: 0,
+            },
+            phone: '',
+            state: '',
+            loading: true,
+            user: {}
+        };
+    },
+    componentWillMount() {
+        this.fetch();
+    },
+    fetch() {
+        this.setState({
+            loading: true
+        });
 
-    Ajax({
-      url: '/ice/commodity/queryList.json',
-      param: {
-        name: this.state.name,
-        brand: this.state.brand,
-        status: this.state.status,
-        pageNum: this.state.pagination.current,
-        pageSize: 10
-      },
-      callback: (result) => {
-        if (result.success) {
-          let page = this.state.pagination;
-          page.total = result.total;
-          this.setState({
-            data: result.data.map((com) => {
-              com.key = com.id;
-              return com;
-            }),
-            pagination: page,
-            loading: false
-          });
+        Ajax({
+            url: '/ice/pc/user/queryList.json',
+            param: {
+                phone: this.state.phone,
+                state: this.state.state,
+                pageNum: this.state.pagination.current,
+                pageSize: 10
+            },
+            callback: (result) => {
+                if (result.success) {
+                    let page = this.state.pagination;
+                    page.total = result.total;
+                    this.setState({
+                        data: result.data.map((item) => {
+                            item.key = item.id;
+                            return item;
+                        }),
+                        pagination: page,
+                        loading: false
+                    });
+                } else {
+                    message.error(result.errorMsg);
+                }
+            },
+        });
+    },
+
+    handleTableChange(pagination, filters, sorter) {
+        const pager = this.state.pagination;
+        pager.current = pagination.current;
+        this.setState({
+            pagination: pager,
+        }, () => {
+            this.fetch();
+        });
+    },
+
+    handleSearch(search) {
+        if (search) {
+            const page = this.state.pagination;
+            page.current = 1;
+
+            this.setState({
+                phone: search.phone,
+                state: search.state,
+                pagination: page,
+            }, this.fetch);
         } else {
-
+            this.fetch();
         }
-      },
-    });
-  },
+    },
 
-  handleTableChange(pagination, filters, sorter) {
-    const pager = this.state.pagination;
-    pager.current = pagination.current;
-    this.setState({
-      pagination: pager,
-    }, () => {
-      this.fetch();
-    });
-  },
+    show(record) {
+        this.setState({
+            user: record
+        }, () => {
+            this.refs.userShowDialog.showModal();
+        });
+    },
 
-  handleSearch(search) {
-    if (search) {
-      const page = this.state.pagination;
-      page.current = 1;
+    showAudit(record) {
+        this.setState({
+            user: record
+        }, () => {
+            this.refs.userAuditDialog.showModal();
+        });
+    },
 
-      this.setState({
-        name: search.name,
-        brand: search.brand,
-        status: search.status,
-        pagination: page,
-      }, this.fetch);
-    } else {
-      this.fetch();
-    }
-  },
+    freeae(record) {
+        Ajax({
+            url: '/ice/pc/user/freeae.json',
+            method: 'post',
+            param: {
+                id: record.id
+            },
+            callback: (result) => {
+                if (result.success) {
+                    message.success('冻结成功');
+                    this.fetch();
+                } else {
 
-  editCom(record) {
-    this.setState({
-      com: record
-    }, () => {
-      this.refs.commodityDialog.showModal();
-    });
-  },
+                }
+            },
+        });
+    },
 
-  onlineCom(record) {
-    Ajax({
-      url: '/ice/commodity/online.json',
-      method: 'post',
-      param: {
-        id: record.id
-      },
-      callback: (result) => {
-        if (result.success) {
-          message.success('上线成功');
-          this.fetch();
-        } else {
+    unFreeae(record) {
+        Ajax({
+            url: '/ice/pc/user/unFreeae.json',
+            method: 'post',
+            param: {
+                id: record.id
+            },
+            callback: (result) => {
+                if (result.success) {
+                    message.success('解冻成功');
+                    this.fetch();
+                } else {
 
-        }
-      },
-    });
-  },
+                }
+            },
+        });
+    },
 
-  offlineCom(record) {
-    Ajax({
-      url: '/ice/commodity/offline.json',
-      method: 'post',
-      param: {
-        id: record.id
-      },
-      callback: (result) => {
-        if (result.success) {
-          message.success('下线成功');
-          this.fetch();
-        } else {
-
-        }
-      },
-    });
-  },
-
-  render() {
-    const columns = [
-      {
-        title: '序号',
-        width: '3%',
-        dataIndex: 'id',
-      }, {
-        title: '名称',
-        width: '7%',
-        dataIndex: 'name',
-        render: (text, record) => (
-          (record.state === 0) ? <span><Icon type="cloud-o" style={{color: 'red'}} /> {text}</span>
-            :
-            <span><Icon type="cloud-upload" style={{color: 'green'}} /> {text}</span>
-        ),
-      }, {
-        title: '厂家/品牌',
-        width: '5%',
-        dataIndex: 'brand',
-      }, {
-        title: '规格/件',
-        width: '5%',
-        dataIndex: 'standardPice',
-      }, {
-        title: '上柜价（元）',
-        children: [{
-          title: '件',
-          width: '5%',
-          dataIndex: 'pricePi',
-        }, {
-          title: '支',
-          width: '5%',
-          dataIndex: 'priceBr',
-        }]
-      }, {
-        title: '零售价（元）',
-        children: [{
-          title: '支',
-          width: '5%',
-          dataIndex: 'retailPriceBr',
-        }]
-      }, {
-        title: '终端利润（元）',
-        children: [{
-          title: '件',
-          width: '5%',
-          dataIndex: 'profitPi',
-        }, {
-          title: '支',
-          width: '5%',
-          dataIndex: 'profitBr',
-        }]
-      }, {
-        title: '库存（件）',
-        width: '5%',
-        dataIndex: 'total',
-        render: (text, record) => (
-          (text > 50) ? <span style={{color: 'green', fontWeight: 'bold'}}>{text}</span>
-            :
-            <span style={{color: 'red', fontWeight: 'bold'}}>{text}</span>
-        ),
-      }, {
-        title: '销量（件）',
-        width: '5%',
-        dataIndex: 'sales',
-      }, {
-        title: '操作',
-        width: '7%',
-        render: (text, record) => (
-          <span>
-            <a href="#commodity_list" onClick={this.editCom.bind(this, record)}>编辑</a>
-            <span className="ant-divider" />
+    render() {
+        const columns = [
             {
-              record.state === 0 ?
-                <Popconfirm title="确定要上线吗?" onConfirm={this.onlineCom.bind(this, record)} okText="是" cancelText="否">
-                  <a href="#commodity_list">上线 <Icon type="arrow-up" /></a>
-                </Popconfirm>
-                 :
-                <Popconfirm title="确定要下线吗?" onConfirm={this.offlineCom.bind(this, record)} okText="是" cancelText="否">
-                  <a href="#commodity_list" ><Icon type="arrow-down" /></a>
-                </Popconfirm>
-            }
+                title: '序号',
+                width: '3%',
+                dataIndex: 'id',
+            }, {
+                title: '手机号',
+                width: '5%',
+                dataIndex: 'userName',
+            }, {
+                title: '最后登录时间',
+                width: '6%',
+                dataIndex: 'lastLoginTime',
+                render: (text, record) => (
+                    <span>
+            {text ? CommonUtil.pareDate(text) : '未登录过'}
           </span>
-        ),
-      }];
+                ),
+            }, {
+                title: '店名',
+                width: '10%',
+                dataIndex: 'shopName',
+            }, {
+                title: '地址',
+                width: '10%',
+                dataIndex: 'address',
+            }, {
+                title: '状态',
+                width: '5%',
+                dataIndex: 'state',
+                render: (text, record) => (
+                    (() => {
+                        let state;
+                        switch (text) {
+                            case 'CREATE':
+                                state = <span>注册</span>
+                                break;
+                            case 'AUTHED':
+                                state = <span>短信验证通过</span>
+                                break;
+                            case 'PASSED':
+                                state = <span>设置好了密码</span>
+                                break;
+                            case 'AUDITING':
+                                state = <span>提交了店铺信息，待审核</span>
+                                break;
+                            case 'AUDIT_NO':
+                                state = <span>审核不通过</span>
+                                break;
+                            case 'NORMAL':
+                                state = <span>正常</span>
+                                break;
+                            case 'FREEAE':
+                                state = <span>冻结</span>
+                                break;
+                            default:
+                                state = <span>未知</span>
+                        }
 
-    return (
-      <div>
-        <Table
-          columns={columns}
-          dataSource={this.state.data}
-          pagination={this.state.pagination}
-          loading={this.state.loading}
-          onChange={this.handleTableChange}
-          bordered />
-      </div>
-    );
-  },
+                        return state;
+                    })()
+                ),
+            }, {
+                title: '操作',
+                width: '7%',
+                render: (text, record) => (
+                    (() => {
+                        let action = [];
+                        switch (record.state) {
+                            case 'AUDITING':
+                                action.push(<a onClick={this.showAudit.bind(this, record)}>审核</a>);
+                                action.push(<span className="ant-divider"/>);
+                                action.push(<Popconfirm title="确定要冻结该用户吗?" onConfirm={this.freeae.bind(this, record)}
+                                                        okText="是" cancelText="否">
+                                    <a>冻结</a>
+                                </Popconfirm>);
+                                break;
+                            case 'AUDIT_NO':
+                                action.push(<a onClick={this.show.bind(this, record)}>查看</a>);
+                                break;
+                            case 'NORMAL':
+                                action.push(<a onClick={this.show.bind(this, record)}>查看</a>);
+                                action.push(<span className="ant-divider"/>);
+                                action.push(<Popconfirm title="确定要冻结该用户吗?" onConfirm={this.freeae.bind(this, record)}
+                                                        okText="是" cancelText="否">
+                                    <a>冻结</a>
+                                </Popconfirm>);
+                                break;
+                            case 'FREEAE':
+                                action.push(<a onClick={this.show.bind(this, record)}>查看</a>);
+                                action.push(<span className="ant-divider"/>);
+                                action.push(<Popconfirm title="确定要解冻该用户吗?" onConfirm={this.unFreeae.bind(this, record)}
+                                                        okText="是" cancelText="否">
+                                    <a>解冻</a>
+                                </Popconfirm>);
+                                break;
+                            default:
+                        }
+
+                        return <span>
+                {action}
+              </span>;
+                    })()
+                ),
+            }];
+
+        return (
+            <div>
+                <Table
+                    title={() => <SearchBar callback={this.handleSearch}/>}
+                    columns={columns}
+                    dataSource={this.state.data}
+                    pagination={this.state.pagination}
+                    loading={this.state.loading}
+                    onChange={this.handleTableChange}
+                    bordered/>
+                <UserShowDialog ref="userShowDialog" user={this.state.user} callback={this.fetch}/>
+                <UserAuditDialog ref="userAuditDialog" user={this.state.user} callback={this.fetch}/>
+            </div>
+        );
+    },
 });
 
 export default UserList;

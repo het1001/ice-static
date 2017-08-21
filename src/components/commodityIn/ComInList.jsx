@@ -28,7 +28,7 @@ const ComInList = React.createClass({
     });
 
     Ajax({
-      url: '/ice/commodityIn/queryList.json',
+      url: '/ice/pc/commodityIn/queryList.json',
       param: {
         fromTime: this.state.fromTime,
         endTime: this.state.endTime,

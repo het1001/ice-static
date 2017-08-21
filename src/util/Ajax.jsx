@@ -3,7 +3,18 @@ import request from 'superagent';
 import { notification, Button } from 'antd';
 
 const reLogin = () => {
-  window.location.href="/ice/login.htm";
+  window.location.href="/ice/pc/login.htm";
+}
+
+const reLoginNotifi = () => {
+    notification.warning({
+        message: '认证失败',
+        description: '长时间未操作，认证信息作废。需重新登录，以认证身份！',
+        btn: (<Button type="primary" size="small" onClick={reLogin}>
+            重新登录
+        </Button>),
+        duration: null
+    });
 }
 
 const Ajax = function (data) {
@@ -24,14 +35,7 @@ const Ajax = function (data) {
           data.callback(res.body);
         } else {
           if (res.status === 200) {
-            notification.warning({
-              message: '认证失败',
-              description: '长时间未操作，认证信息作废。需重新登录，以认证身份！',
-              btn: (<Button type="primary" size="small" onClick={reLogin}>
-                重新登录
-              </Button>),
-              duration: null
-            });
+              reLoginNotifi();
           }
         }
       });
@@ -44,7 +48,6 @@ const Ajax = function (data) {
       .set('Content-Type', data.contentType)
       .set('Accept', 'application/json')
       .end(function(err, res){
-        console.log(res);
         if (err) {
           console.error(err);
         }
@@ -53,14 +56,7 @@ const Ajax = function (data) {
           data.callback(res.body);
         } else {
           if (res.status === 200) {
-            notification.warning({
-              message: '认证失败',
-              description: '长时间未操作，认证信息作废。需重新登录，以认证身份！',
-              btn: (<Button type="primary" size="small" onClick={reLogin}>
-                重新登录
-              </Button>),
-              duration: null
-            });
+              reLoginNotifi();
           }
         }
       });

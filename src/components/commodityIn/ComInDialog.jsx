@@ -25,8 +25,7 @@ const ComInDialog = React.createClass({
   },
 
   handleOk() {
-    const comIns = this.refs.comIn.getFieldValue('comIns');
-
+    const comIns = this.refs.comIn.getForm().getFieldValue('comIns');
     for (const i in comIns) {
       if (!comIns[i].comId) {
         message.error("第" + comIns[i].key + "个商品为空");
@@ -45,7 +44,7 @@ const ComInDialog = React.createClass({
     }
 
     Ajax({
-      url: '/ice/commodityIn/create.json',
+      url: '/ice/pc/commodityIn/create.json',
       method: 'post',
       param: JSON.stringify(comIns),
       callback: (result) => {
