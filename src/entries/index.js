@@ -15,7 +15,7 @@ class App extends React.Component {
 
     this.state = {
       currentMenu: current,
-      date: '',
+      date: ''
     };
   }
   callback(key) {

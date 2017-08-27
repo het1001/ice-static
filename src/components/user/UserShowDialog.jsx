@@ -40,7 +40,7 @@ const UserShowDialog = React.createClass({
                     });
                 } else {
                 }
-            },
+            }
         });
 
         this.setState({
@@ -58,12 +58,12 @@ const UserShowDialog = React.createClass({
         const formItemLayout = {
             labelCol: {
                 xs: {span: 24},
-                sm: {span: 6},
+                sm: {span: 6}
             },
             wrapperCol: {
                 xs: {span: 24},
-                sm: {span: 14},
-            },
+                sm: {span: 14}
+            }
         };
 
         return (
@@ -116,7 +116,7 @@ const UserShowDialog = React.createClass({
                 <ImgNativeShow title="原始图片" imgKey={this.state.shopImgKey} />
             </div>
         );
-    },
+    }
 });
 
 export default UserShowDialog;

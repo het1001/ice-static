@@ -13,7 +13,7 @@ const Routes = ({ history }) =>
   </Router>;
 
 Routes.propTypes = {
-  history: PropTypes.any,
+  history: PropTypes.any
 };
 
 export default Routes;

@@ -3,8 +3,8 @@ import request from 'superagent';
 import { notification, Button } from 'antd';
 
 const reLogin = () => {
-  window.location.href="/ice/pc/login.htm";
-}
+  window.location.href = '/ice/pc/login.htm';
+};
 
 const reLoginNotifi = () => {
     notification.warning({
@@ -15,7 +15,7 @@ const reLoginNotifi = () => {
         </Button>),
         duration: null
     });
-}
+};
 
 const Ajax = function (data) {
 
@@ -61,6 +61,6 @@ const Ajax = function (data) {
         }
       });
   }
-}
+};
 
 export default Ajax;
