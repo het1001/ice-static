@@ -1,6 +1,8 @@
 import React from 'react';
-import { Icon, Input, InputNumber, Row, Col, Modal, Upload, message } from 'antd';
+import { Icon, Upload, message } from 'antd';
 const Dragger = Upload.Dragger;
+
+import Ajax from '../util/Ajax';
 
 const FileUpload = React.createClass({
   getInitialState() {
@@ -13,18 +15,42 @@ const FileUpload = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    this.reloadFile(nextProps);
+    if (this.props.value !== nextProps.value || this.props.commodity.id !== nextProps.commodity.id) {
+      this.reloadFile(nextProps);
+    }
   },
 
   reloadFile(props) {
-    let fileKey = '';
-    if (props.value) {
-      fileKey = props.value;
-    }
+      if (props.value && props.value !== this.state.fileKey) {
+        this.setState({
+            fileKey: props.value
+        });
+      } else {
+          if (!props.commodity) {
+              this.setState({
+                fileKey: ''
+              });
+              return;
+          }
 
-    this.setState({
-      fileKey,
-    });
+          Ajax({
+              url: '/ice/pc/commodityPic/getMainPicKey.json',
+              param: {
+                  comId: props.commodity.id
+              },
+              callback: (result) => {
+                  if (result.success && result.data) {
+                      this.setState({
+                        fileKey: result.data.picKey
+                      });
+
+                      this.props.callback('fileKey', result.data.picKey);
+                  } else {
+
+                  }
+              },
+          });
+      }
   },
 
   render() {
@@ -52,8 +78,8 @@ const FileUpload = React.createClass({
             fileKey: info.file.response.data
           });
 
-          this.props.callback(info.file.response.data);
-          message.success(`${info.file.name} 上传成功`);
+          this.props.callback('fileKey', info.file.response.data);
+          // message.success(`${info.file.name} 上传成功`);
         } else if (info.file.status === 'error') {
           message.error(`${info.file.name} 上传失败`);
         }

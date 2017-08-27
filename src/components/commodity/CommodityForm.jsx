@@ -4,12 +4,12 @@ const FormItem = Form.Item;
 import Ajax from '../../util/Ajax';
 import styles from './CommodityForm.less';
 import FileUpload from '../FileUpload';
+import FileUploadMult from '../FileUploadMult';
 
 const CommodityForm = React.createClass({
   getInitialState() {
     let priceBr = 0, standardPice = 0, pricePi = 0;
     if (this.props.com && this.props.com.priceBr && this.props.com.priceBr > 0) {
-      console.log(this.props.com);
       standardPice = this.props.com.standardPice || 0;
       pricePi = this.props.com.pricePi || 0;
       priceBr = this.props.com.priceBr;
@@ -73,10 +73,13 @@ const CommodityForm = React.createClass({
     });
   },
 
-  handleFileUpload(fileKey) {
-    this.props.form.setFieldsValue({
-      fileKey,
-    });
+  setButtonLoading() {
+  },
+
+  setFieldValue(key, value) {
+    const obj = {};
+    obj[key] = value;
+    this.props.form.setFieldsValue(obj);
   },
 
   render() {
@@ -230,18 +233,21 @@ const CommodityForm = React.createClass({
           </Col>
           <Col span={6} pull={2}>
             <FormItem
-              label="商品图"
-              labelCol={{ span: 8 }}
-              wrapperCol={{ span: 14 }}
-            >
-            </FormItem>
-            <FormItem
               label=""
               labelCol={{ span: 4 }}
               wrapperCol={{ span: 2 }}
             >
               {getFieldDecorator('fileKey')(
-                <FileUpload callback={this.handleFileUpload} />
+                <FileUpload commodity={this.props.com} before={this.setButtonLoading} callback={this.setFieldValue} />
+              )}
+            </FormItem>
+            <FormItem
+                label=""
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 16 }}
+            >
+              {getFieldDecorator('fileKeys')(
+                  <FileUploadMult commodity={this.props.com} callback={this.setFieldValue} />
               )}
             </FormItem>
           </Col>
@@ -282,9 +288,6 @@ export default Form.create({
       },
       barCode:  {
         value : com.barCode || '',
-      },
-      fileKey:  {
-        value : com.imgKey || '',
       },
       desc:  {
         value : com.desc || '',

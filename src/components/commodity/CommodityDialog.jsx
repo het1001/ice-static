@@ -22,9 +22,9 @@ const CommodityDialog = React.createClass({
     },
 
     showModal() {
-        this.setState({
-            visible: true
-        });
+			this.setState({
+				visible: true
+			});
     },
 
     handleCancel() {
@@ -58,7 +58,7 @@ const CommodityDialog = React.createClass({
                         } else {
                             message.error('更新失败：' + result.errorMsg);
                         }
-                    },
+                    }
                 });
             } else {
                 Ajax({
@@ -73,7 +73,7 @@ const CommodityDialog = React.createClass({
                         } else {
                             message.error('保存失败：' + result.errorMsg);
                         }
-                    },
+                    }
                 });
             }
         });
@@ -91,7 +91,7 @@ const CommodityDialog = React.createClass({
                 </Modal>
             </div>
         );
-    },
+    }
 });
 
 export default CommodityDialog;

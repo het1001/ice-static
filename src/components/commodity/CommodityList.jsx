@@ -196,8 +196,8 @@ const CommodityList = React.createClass({
                 width: '7%',
                 render: (text, record) => (
                     <span>
-            <a href="#commodity_list" onClick={this.editCom.bind(this, record)}>编辑</a>
-            <span className="ant-divider"/>
+                        <a href="#commodity_list" onClick={this.editCom.bind(this, record)}>编辑</a>
+                        <span className="ant-divider"/>
                         {
                             record.state === 0 ?
                                 <Popconfirm title="确定要上线吗?" onConfirm={this.onlineCom.bind(this, record)} okText="是"
