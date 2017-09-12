@@ -13,7 +13,8 @@ const subMenus = {
   all_order: ['sub2'],
   person: ['sub3'],
   position: ['sub3'],
-  dist_set: ['sub4'],
+	district: ['sub4', 'dist_set'],
+	salesman: ['sub4', 'dist_set'],
   main_img_set: ['sub4'],
 }
 
@@ -56,7 +57,10 @@ const MyMenu = React.createClass({
           <Menu.Item key="posion"><Icon type="environment-o" />位置分布</Menu.Item>
         </SubMenu>
         <SubMenu key="sub4" title={<span><Icon type="setting" /><span>系统设置</span></span>}>
-          <Menu.Item key="dist_set"><Icon type="phone" />配送设置</Menu.Item>
+          <SubMenu key="dist_set" title={<span><Icon type="rocket" /><span>配送设置</span></span>}>
+            <Menu.Item key="district"><Icon type="share-alt" />片区管理</Menu.Item>
+            <Menu.Item key="salesman"><Icon type="customer-service" />业务员管理</Menu.Item>
+          </SubMenu>
           <Menu.Item key="main_img_set"><Icon type="tablet" />APP广告设置</Menu.Item>
           <SubMenu key="sub5" title="其他">
             <Menu.Item key="7">Option 7</Menu.Item>

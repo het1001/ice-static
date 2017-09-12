@@ -210,7 +210,7 @@ const CommodityList = React.createClass({
                                     <a href="#commodity_list"><Icon type="arrow-down"/></a>
                                 </Popconfirm>
                         }
-          </span>
+                    </span>
                 ),
             }];
 

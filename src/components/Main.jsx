@@ -5,6 +5,8 @@ import ComInList from './commodityIn/ComInList';
 import NewOrder from './order/NewOrder';
 import UserList from './user/UserList';
 import AppMainImgList from './appmainimg/AppMainImgList';
+import DistrictList from './allot/district/DistrictList';
+import SalesmanList from './allot/salesman/SalesmanList';
 
 const Main = React.createClass({
   getInitialState() {
@@ -33,10 +35,15 @@ const Main = React.createClass({
       case 'person':
           page = <UserList />
           break;
-        case 'main_img_set':
-            page = <AppMainImgList />
-            break;
-
+      case 'main_img_set':
+          page = <AppMainImgList />
+          break;
+      case 'district':
+          page = <DistrictList />;
+          break;
+			case 'salesman':
+				page = <SalesmanList />;
+				break;
       default:
     }
 
