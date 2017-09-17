@@ -19,6 +19,10 @@ Date.prototype.Format = function (fmt) { //author: meizz
 const CommonUtil = {
   pareDate: (time) => {
     return new Date(time).Format('yyyy-MM-dd hh:mm:ss');
+  },
+
+  pareDate2: (time) => {
+		return new Date(time).Format('yyyy-MM-dd');
   }
 }
 

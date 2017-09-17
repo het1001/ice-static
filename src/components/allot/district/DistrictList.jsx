@@ -2,7 +2,6 @@ import React from 'react';
 import {Table, message, Popconfirm} from 'antd';
 import Ajax from '../../../util/Ajax';
 import SearchBar from './SearchBar';
-import CommonUtil from '../../../util/CommonUtil';
 
 import DistrictDialog from './DistrictDialog';
 

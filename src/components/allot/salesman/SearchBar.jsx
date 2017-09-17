@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Input, Row, Col, Button } from 'antd';
+import { Form, Input, Row, Col, Button, Select } from 'antd';
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 import DistrictDialog from './SalesmanDialog';
 
@@ -51,7 +52,18 @@ const SearchBar = React.createClass({
               </FormItem>
             </Col>
             <Col sm={8}>
-
+              <FormItem
+                label="类型"
+                labelCol={{ span: 10 }}
+                wrapperCol={{ span: 14 }}
+              >
+                {getFieldDecorator('type')(
+                  <Select allowClear>
+                    <Option value="DELIVERYMEN">配送员</Option>
+                    <Option value="SALESMAN">业务员</Option>
+                  </Select>
+								)}
+              </FormItem>
             </Col>
             <Col sm={8}>
 

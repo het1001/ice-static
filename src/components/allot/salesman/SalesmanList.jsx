@@ -15,11 +15,12 @@ const SalesmanList = React.createClass({
                 total: 0,
             },
             name: '',
+            type: '',
             isEdit: false,
             loading: true,
             obj: {},
-          deliveryMens: [],
-					salesmans: [],
+            deliveryMens: [],
+            salesmans: [],
         };
     },
     componentWillMount() {
@@ -48,6 +49,7 @@ const SalesmanList = React.createClass({
             url: '/ice/pc/salesman/queryList.json',
             param: {
                 name: this.state.name,
+                type: this.state.type,
                 pageNum: this.state.pagination.current,
                 pageSize: 10
             },
@@ -87,6 +89,7 @@ const SalesmanList = React.createClass({
 
             this.setState({
                 name: search.name,
+                type: search.type,
                 pagination: page,
             }, this.fetch);
         } else {
@@ -127,15 +130,18 @@ const SalesmanList = React.createClass({
                 dataIndex: 'id',
             }, {
                 title: '姓名',
+						    width: '45%',
                 dataIndex: 'name',
                 render: (text, record) => (
 									record.uniqueKey ? <span>{text + '（' + record.uniqueKey + '）'}</span> : <span>{text}</span>
                 ),
             }, {
                 title: '手机',
+						    width: '25%',
                 dataIndex: 'phone',
             }, {
                 title: '类型',
+						    width: '15%',
                 dataIndex: 'salesmanTypeEnum',
                 render: (text, record) => (
 									text === 'DELIVERYMEN' ? <span>配送员</span> : <span>业务员</span>

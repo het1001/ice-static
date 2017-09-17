@@ -1,5 +1,4 @@
 import React from 'react';
-import { Menu, Icon } from 'antd';
 import CommodityList from './commodity/CommodityList';
 import ComInList from './commodityIn/ComInList';
 import NewOrder from './order/NewOrder';
@@ -7,6 +6,7 @@ import UserList from './user/UserList';
 import AppMainImgList from './appmainimg/AppMainImgList';
 import DistrictList from './allot/district/DistrictList';
 import SalesmanList from './allot/salesman/SalesmanList';
+import PromotionList from './promotion/PromotionList';
 
 const Main = React.createClass({
   getInitialState() {
@@ -44,6 +44,9 @@ const Main = React.createClass({
 			case 'salesman':
 				page = <SalesmanList />;
 				break;
+      case 'promotion_list':
+        page = <PromotionList />;
+        break;
       default:
     }
 

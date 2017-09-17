@@ -4,6 +4,7 @@ const SubMenu = Menu.SubMenu;
 
 const subMenus = {
   commodity_list: ['sub1'],
+	promotion_list: ['sub1'],
   commodityIn_list: ['sub1'],
   new_order: ['sub2'],
   no_out_order: ['sub2'],
@@ -42,6 +43,7 @@ const MyMenu = React.createClass({
       >
         <SubMenu key="sub1" title={<span><Icon type="appstore-o" /><span>商品管理</span></span>}>
           <Menu.Item key="commodity_list"><Icon type="bars" />商品列表</Menu.Item>
+          <Menu.Item key="promotion_list"><Icon type="calculator" />促销管理</Menu.Item>
           <Menu.Item key="commodityIn_list"><Icon type="scan" />入库管理</Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>订单管理</span></span>}>
