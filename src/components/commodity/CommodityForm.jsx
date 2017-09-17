@@ -162,15 +162,6 @@ const CommodityForm = React.createClass({
                   )} 元
                 </FormItem>
                 <FormItem
-                  label="促销方式"
-                  labelCol={{ span: 8 }}
-                  wrapperCol={{ span: 14 }}
-                >
-                  {getFieldDecorator('promotion')(
-                    <Input placeholder="输入促销方式" size="default" />
-                  )}
-                </FormItem>
-                <FormItem
                     label="条形码"
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 14 }}
@@ -273,9 +264,6 @@ export default Form.create({
       },
       retailPriceBr:  {
         value : com.retailPriceBr || '',
-      },
-      promotion:  {
-        value : com.promotion || '',
       },
       brand:  {
         value : com.brand || '',
