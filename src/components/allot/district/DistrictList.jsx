@@ -6,101 +6,101 @@ import SearchBar from './SearchBar';
 import DistrictDialog from './DistrictDialog';
 
 const DistrictList = React.createClass({
-    getInitialState() {
-        return {
-            data: [],
-            pagination: {
-                current: 1,
-                total: 0,
-            },
-            name: '',
-            isEdit: false,
-            loading: true,
-            obj: {},
-          deliveryMens: [],
-					salesmans: [],
-        };
-    },
-    componentWillMount() {
-      this.fetch();
-			Ajax({
-				url: '/ice/pc/salesman/queryByType.json',
-				param: {},
-				callback: (result) => {
-					if (result.success) {
-            this.setState({
-							deliveryMens: result.deliveryMen,
-							salesmans: result.salesman
-            });
-					} else {
-						message.error(result.errorMsg);
-					}
-				},
-			});
-    },
-    fetch() {
-        this.setState({
-            loading: true
-        });
+	getInitialState() {
+		return {
+			data: [],
+			pagination: {
+				current: 1,
+				total: 0,
+			},
+			name: '',
+			isEdit: false,
+			loading: true,
+			obj: {},
+			deliveryMens: [],
+			salesmans: [],
+		};
+	},
+	componentWillMount() {
+		this.fetch();
+		Ajax({
+			url: '/ice/pc/salesman/queryByType.json',
+			param: {},
+			callback: (result) => {
+				if (result.success) {
+					this.setState({
+						deliveryMens: result.deliveryMen,
+						salesmans: result.salesman
+					});
+				} else {
+					message.error(result.errorMsg);
+				}
+			},
+		});
+	},
+	fetch() {
+		this.setState({
+			loading: true
+		});
 
-        Ajax({
-            url: '/ice/pc/district/queryList.json',
-            param: {
-                name: this.state.name,
-                pageNum: this.state.pagination.current,
-                pageSize: 10
-            },
-            callback: (result) => {
-                if (result.success) {
-                    let page = this.state.pagination;
-                    page.total = result.total;
-                    this.setState({
-                        data: result.data.map((item) => {
-                            item.key = item.id;
-                            return item;
-                        }),
-                        pagination: page,
-                        loading: false
-                    });
-                } else {
-                    message.error(result.errorMsg);
-                }
-            },
-        });
-    },
+		Ajax({
+			url: '/ice/pc/district/queryList.json',
+			param: {
+				name: this.state.name,
+				pageNum: this.state.pagination.current,
+				pageSize: 10
+			},
+			callback: (result) => {
+				if (result.success) {
+					let page = this.state.pagination;
+					page.total = result.total;
+					this.setState({
+						data: result.data.map((item) => {
+							item.key = item.id;
+							return item;
+						}),
+						pagination: page,
+						loading: false
+					});
+				} else {
+					message.error(result.errorMsg);
+				}
+			},
+		});
+	},
 
-    handleTableChange(pagination, filters, sorter) {
-        const pager = this.state.pagination;
-        pager.current = pagination.current;
-        this.setState({
-            pagination: pager,
-        }, () => {
-            this.fetch();
-        });
-    },
+	handleTableChange(pagination, filters, sorter) {
+		const pager = this.state.pagination;
+		pager.current = pagination.current;
+		this.setState({
+			pagination: pager,
+		}, () => {
+			this.fetch();
+		});
+	},
 
-    handleSearch(search) {
-        if (search) {
-            const page = this.state.pagination;
-            page.current = 1;
+	handleSearch(search) {
+		if (search) {
+			const page = this.state.pagination;
+			page.current = 1;
 
-            this.setState({
-                name: search.name,
-                pagination: page,
-            }, this.fetch);
-        } else {
-            this.fetch();
-        }
-    },
+			this.setState({
+				name: search.name,
+				pagination: page,
+			}, this.fetch);
+		} else {
+			this.fetch();
+		}
+	},
 
-    edit(record) {
-        this.setState({
-            obj: record,
-					isEdit: true,
-        }, () => {
-            this.refs.districtDialog.showModal(false);
-        });
-    },
+	edit(record) {
+		this.setState({
+			obj: record,
+			isEdit: true,
+		}, () => {
+			this.refs.districtDialog.showModal(false);
+		});
+	},
 
 	delete(record) {
 		Ajax({
@@ -116,56 +116,56 @@ const DistrictList = React.createClass({
 				}
 			},
 		});
-  },
+	},
 
-    render() {
-        const columns = [
-            {
-                title: '序号',
-                width: '5%',
-                dataIndex: 'id',
-            }, {
-                title: '名称',
-                dataIndex: 'name',
-            }, {
-                title: '操作',
-                width: '10%',
-                render: (text, record) => (
-                  <span>
+	render() {
+		const columns = [
+			{
+				title: '序号',
+				width: '5%',
+				dataIndex: 'id',
+			}, {
+				title: '名称',
+				dataIndex: 'name',
+			}, {
+				title: '操作',
+				width: '10%',
+				render: (text, record) => (
+					<span>
                       <a onClick={this.edit.bind(this, record)}>编辑</a>
                       <span className="ant-divider"/>
                       <Popconfirm title="确定要删除吗?" onConfirm={this.delete.bind(this, record)}
-                                  okText="是" cancelText="否">
+																	okText="是" cancelText="否">
                         <a>删除</a>
                       </Popconfirm>
                   </span>
-                ),
-            }];
+				),
+			}];
 
-        return (
-            <div>
-                <Table
-                    title={() => <SearchBar
-                      deliveryMens={this.state.deliveryMens}
-                      salesmans={this.state.salesmans}
-                      callback={this.handleSearch}
-                    />}
-                    columns={columns}
-                    dataSource={this.state.data}
-                    pagination={this.state.pagination}
-                    loading={this.state.loading}
-                    onChange={this.handleTableChange}
-                    bordered/>
-                <DistrictDialog
-                  ref="districtDialog"
-                  obj={this.state.obj}
-                  isEdit={this.state.isEdit}
-                  deliveryMens={this.state.deliveryMens}
-                  salesmans={this.state.salesmans}
-                  callback={this.fetch}/>
-            </div>
-        );
-    },
+		return (
+			<div>
+				<Table
+					title={() => <SearchBar
+						deliveryMens={this.state.deliveryMens}
+						salesmans={this.state.salesmans}
+						callback={this.handleSearch}
+					/>}
+					columns={columns}
+					dataSource={this.state.data}
+					pagination={this.state.pagination}
+					loading={this.state.loading}
+					onChange={this.handleTableChange}
+					bordered/>
+				<DistrictDialog
+					ref="districtDialog"
+					obj={this.state.obj}
+					isEdit={this.state.isEdit}
+					deliveryMens={this.state.deliveryMens}
+					salesmans={this.state.salesmans}
+					callback={this.fetch}/>
+			</div>
+		);
+	},
 });
 
 export default DistrictList;

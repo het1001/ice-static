@@ -1,73 +1,75 @@
 import React from 'react';
-import { Form, Select, Modal, message, Input, InputNumber, DatePicker } from 'antd';
+import {Form, Select, Modal, message, Input, InputNumber, DatePicker} from 'antd';
+
 const FormItem = Form.Item;
 const Option = Select.Option;
-const { TextArea } = Input;
-const { RangePicker } = DatePicker;
+const {TextArea} = Input;
+const {RangePicker} = DatePicker;
 
 import moment from 'moment';
+
 const dateFormat = 'YYYY-MM-DD';
 
 import Ajax from '../../util/Ajax';
 import CommonUtil from '../../util/CommonUtil';
 
 const PromotionDialog = React.createClass({
-    getInitialState() {
-        return {
-					visible: false,
-					id: 0,
-					comId: '',
-					arithId: '',
-					desc: '',
-					params: {},
-					effectiveDate: '',
-					deadline: ''
-        };
-    },
-    componentWillMount() {
-    },
+	getInitialState() {
+		return {
+			visible: false,
+			id: 0,
+			comId: '',
+			arithId: '',
+			desc: '',
+			params: {},
+			effectiveDate: '',
+			deadline: ''
+		};
+	},
+	componentWillMount() {
+	},
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.isEdit) {
-					this.setState({
-            id: nextProps.obj.id,
-						comId: nextProps.obj.comId,
-						arithId: nextProps.obj.arithId,
-						desc: nextProps.obj.desc,
-						params: nextProps.obj.params,
-						effectiveDate: CommonUtil.pareDate2(nextProps.obj.effectiveDate),
-						deadline: CommonUtil.pareDate2(nextProps.obj.deadline),
-						funcKeys: JSON.parse(nextProps.arithmeticMap[nextProps.obj.arithId].funcKeys),
-					});
-        }
-    },
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.isEdit) {
+			this.setState({
+				id: nextProps.obj.id,
+				comId: nextProps.obj.comId,
+				arithId: nextProps.obj.arithId,
+				desc: nextProps.obj.desc,
+				params: nextProps.obj.params,
+				effectiveDate: CommonUtil.pareDate2(nextProps.obj.effectiveDate),
+				deadline: CommonUtil.pareDate2(nextProps.obj.deadline),
+				funcKeys: JSON.parse(nextProps.arithmeticMap[nextProps.obj.arithId].funcKeys),
+			});
+		}
+	},
 
-    showModal(isAdd) {
-        if (!isAdd) {
+	showModal(isAdd) {
+		if (!isAdd) {
 
-        } else {
-					this.setState({
-						id: 0,
-						comId: '',
-						arithId: '',
-						desc: '',
-						params: {},
-						effectiveDate: '',
-						deadline: '',
-						funcKeys: '',
-					});
-        }
+		} else {
+			this.setState({
+				id: 0,
+				comId: '',
+				arithId: '',
+				desc: '',
+				params: {},
+				effectiveDate: '',
+				deadline: '',
+				funcKeys: '',
+			});
+		}
 
-        this.setState({
-            visible: true
-        });
-    },
+		this.setState({
+			visible: true
+		});
+	},
 
 	handleOk() {
-    if (!this.state.comId) {
-      message.error("商品不能为空");
+		if (!this.state.comId) {
+			message.error("商品不能为空");
 			return;
-    }
+		}
 
 		if (!this.state.arithId) {
 			message.error("促销方式不能为空");
@@ -84,14 +86,14 @@ const PromotionDialog = React.createClass({
 			return;
 		}
 
-    const params = {};
-    params.id = this.state.id;
-    params.comId = this.state.comId;
-    params.arithId = this.state.arithId;
-    params.desc = this.state.desc;
+		const params = {};
+		params.id = this.state.id;
+		params.comId = this.state.comId;
+		params.arithId = this.state.arithId;
+		params.desc = this.state.desc;
 		params.params = JSON.stringify(this.state.params);
-    params.effectiveDate = this.state.effectiveDate;
-    params.deadline = this.state.deadline;
+		params.effectiveDate = this.state.effectiveDate;
+		params.deadline = this.state.deadline;
 
 		if (!this.props.isEdit) {
 			Ajax({
@@ -124,18 +126,18 @@ const PromotionDialog = React.createClass({
 				},
 			});
 		}
-  },
+	},
 
-    handleCancel() {
-        this.setState({
-            visible: false
-        });
-    },
+	handleCancel() {
+		this.setState({
+			visible: false
+		});
+	},
 
 	onInputChange(key, e) {
 		this.state[key] = e.target.value;
-    this.setState({});
-  },
+		this.setState({});
+	},
 
 	onArithChange(arithId) {
 		this.setState({
@@ -146,9 +148,9 @@ const PromotionDialog = React.createClass({
 	},
 
 	handleSelectChange(key, e) {
-    this.state[key] = e;
-    this.setState({});
-  },
+		this.state[key] = e;
+		this.setState({});
+	},
 
 	onDateChange(date, dateString) {
 		this.setState({
@@ -158,98 +160,101 @@ const PromotionDialog = React.createClass({
 	},
 
 	onParamChange(key, value) {
-    	this.state.params[key] = value;
-    	this.setState({});
+		this.state.params[key] = value;
+		this.setState({});
 	},
 
-    render() {
-			const formItemLayout = {
-				labelCol: {
-						xs: {span: 24},
-						sm: {span: 6},
-				},
-				wrapperCol: {
-						xs: {span: 24},
-						sm: {span: 14},
-				},
-			};
+	render() {
+		const formItemLayout = {
+			labelCol: {
+				xs: {span: 24},
+				sm: {span: 6},
+			},
+			wrapperCol: {
+				xs: {span: 24},
+				sm: {span: 14},
+			},
+		};
 
-        return (
-					<div>
-						<Modal title="新增" visible={this.state.visible} width="700px"
-									 maskClosable={false}
-									 onOk={this.handleOk} onCancel={this.handleCancel}
+		return (
+			<div>
+				<Modal title="新增" visible={this.state.visible} width="700px"
+							 maskClosable={false}
+							 onOk={this.handleOk} onCancel={this.handleCancel}
+				>
+					<Form>
+						<FormItem
+							{...formItemLayout}
+							label="商品"
+							required
 						>
-							<Form>
-								<FormItem
-									{...formItemLayout}
-									label="商品"
-									required
-								>
-									<Select
-										showSearch
-										disabled={this.props.isEdit ? true : false}
-										style={{ width: '100%' }}
-										optionFilterProp="children"
-										value={this.state.comId}
-										onChange={this.handleSelectChange.bind(this, 'comId')}
-									>
-										{
-											this.props.comData.map((item) => {
-												return <Option key={item.id} value={item.id}>{item.name}</Option>;
-											})
-										}
-									</Select>
-								</FormItem>
-								<FormItem
-									{...formItemLayout}
-									label="促销方式"
-									required
-								>
-									<Select
-										showSearch
-										style={{ width: '100%' }}
-										optionFilterProp="children"
-										value={this.state.arithId}
-										onChange={this.onArithChange}
-									>
-										{
-											this.props.arithmetic.map((item) => {
-												return <Option key={item.id} value={item.id}>{item.name}</Option>;
-											})
-										}
-									</Select>
-								</FormItem>
-								{this.state.funcKeys ? this.state.funcKeys.map((item) => {
-									return <FormItem
-										{...formItemLayout}
-										label={"其中 "+item.key+"="}
-										required
-									>
-										{
-											item.type === 'inputNum' ? <InputNumber style={{ width: '50%' }} value={this.state.params[item.key]} onChange={this.onParamChange.bind(this, item.key)} /> : null
-										}
-									</FormItem>
-								}) : null}
-								<FormItem
-									{...formItemLayout}
-									label="促销描述"
-									required
-								>
-									<TextArea rows={4} onChange={this.onInputChange.bind(this, 'desc')} value={this.state.desc} />
-								</FormItem>
-								<FormItem
-									{...formItemLayout}
-									label="生效时间范围"
-									required
-								>
-									<RangePicker value={this.state.effectiveDate ? [moment(this.state.effectiveDate, dateFormat), moment(this.state.deadline, dateFormat)] : []} onChange={this.onDateChange} />
-								</FormItem>
-							</Form>
-						</Modal>
-					</div>
-        );
-    },
+							<Select
+								showSearch
+								disabled={this.props.isEdit ? true : false}
+								style={{width: '100%'}}
+								optionFilterProp="children"
+								value={this.state.comId}
+								onChange={this.handleSelectChange.bind(this, 'comId')}
+							>
+								{
+									this.props.comData.map((item) => {
+										return <Option key={item.id} value={item.id}>{item.name}</Option>;
+									})
+								}
+							</Select>
+						</FormItem>
+						<FormItem
+							{...formItemLayout}
+							label="促销方式"
+							required
+						>
+							<Select
+								showSearch
+								style={{width: '100%'}}
+								optionFilterProp="children"
+								value={this.state.arithId}
+								onChange={this.onArithChange}
+							>
+								{
+									this.props.arithmetic.map((item) => {
+										return <Option key={item.id} value={item.id}>{item.name}</Option>;
+									})
+								}
+							</Select>
+						</FormItem>
+						{this.state.funcKeys ? this.state.funcKeys.map((item) => {
+							return <FormItem
+								{...formItemLayout}
+								label={"其中 " + item.key + "="}
+								required
+							>
+								{
+									item.type === 'inputNum' ? <InputNumber style={{width: '50%'}} value={this.state.params[item.key]}
+																													onChange={this.onParamChange.bind(this, item.key)}/> : null
+								}
+							</FormItem>
+						}) : null}
+						<FormItem
+							{...formItemLayout}
+							label="促销描述"
+							required
+						>
+							<TextArea rows={4} onChange={this.onInputChange.bind(this, 'desc')} value={this.state.desc}/>
+						</FormItem>
+						<FormItem
+							{...formItemLayout}
+							label="生效时间范围"
+							required
+						>
+							<RangePicker
+								value={this.state.effectiveDate ? [moment(this.state.effectiveDate, dateFormat), moment(this.state.deadline, dateFormat)] : []}
+								onChange={this.onDateChange}/>
+						</FormItem>
+					</Form>
+				</Modal>
+			</div>
+		);
+	},
 });
 
 export default PromotionDialog;
