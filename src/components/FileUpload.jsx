@@ -44,7 +44,6 @@ const FileUpload = React.createClass({
 						this.setState({
 							fileKey: result.data.picKey
 						});
-
 						this.props.callback('fileKey', result.data.picKey);
 					} else {
 

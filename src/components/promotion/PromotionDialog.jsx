@@ -229,8 +229,29 @@ const PromotionDialog = React.createClass({
 								required
 							>
 								{
-									item.type === 'inputNum' ? <InputNumber style={{width: '50%'}} value={this.state.params[item.key]}
-																													onChange={this.onParamChange.bind(this, item.key)}/> : null
+									(() => {
+										switch(item.type) {
+											case 'inputNum':
+												return <InputNumber style={{width: '50%'}} value={this.state.params[item.key]}
+																		 onChange={this.onParamChange.bind(this, item.key)}/>
+											case 'commodity':
+												return <Select
+													showSearch
+													style={{width: '100%'}}
+													optionFilterProp="children"
+													value={this.state.params[item.key]}
+													onChange={this.onParamChange.bind(this, item.key)}
+												>
+													{
+														this.props.comData.map((item) => {
+															return <Option key={item.id} value={item.id}>{item.name}</Option>;
+														})
+													}
+												</Select>
+											default:
+												return null
+										}
+									})()
 								}
 							</FormItem>
 						}) : null}

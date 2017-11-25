@@ -3,7 +3,7 @@ import request from 'superagent';
 import {notification, Button} from 'antd';
 
 const reLogin = () => {
-	window.location.href = '/ice/pc/login.htm';
+	window.location.href = '/ice/pc/login.htm?hash=' + (window.location.hash ? window.location.hash.substr(1) : '');
 };
 
 const reLoginNotifi = () => {

@@ -137,15 +137,19 @@ const UserList = React.createClass({
 		const columns = [
 			{
 				title: '序号',
-				width: '3%',
+				width: '5%',
 				dataIndex: 'id',
 			}, {
+				title: '姓名',
+				width: '95px',
+				dataIndex: 'realName',
+			}, {
 				title: '手机号',
-				width: '5%',
+				width: '95px',
 				dataIndex: 'userName',
 			}, {
 				title: '最后登录时间',
-				width: '6%',
+				width: '140px',
 				dataIndex: 'lastLoginTime',
 				render: (text, record) => (
 					<span>
@@ -154,15 +158,13 @@ const UserList = React.createClass({
 				),
 			}, {
 				title: '店名',
-				width: '10%',
 				dataIndex: 'shopName',
 			}, {
 				title: '地址',
-				width: '10%',
-				dataIndex: 'address',
+				dataIndex: 'shopAddress',
 			}, {
 				title: '状态',
-				width: '5%',
+				width: '13%',
 				dataIndex: 'state',
 				render: (text, record) => (
 					(() => {
@@ -198,7 +200,7 @@ const UserList = React.createClass({
 				),
 			}, {
 				title: '操作',
-				width: '7%',
+				width: '140px',
 				render: (text, record) => (
 					(() => {
 						let action = [];

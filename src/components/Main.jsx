@@ -1,7 +1,10 @@
 import React from 'react';
 import CommodityList from './commodity/CommodityList';
 import ComInList from './commodityIn/ComInList';
-import NewOrder from './order/NewOrder';
+import NewOrder from './order/NewOrderList';
+import VerifyOrderList from './order/VerifyOrderList';
+import CanceledOrderList from './order/CanceledOrderList';
+import CompletedOrderList from './order/CompletedOrderList';
 import UserList from './user/UserList';
 import AppMainImgList from './appmainimg/AppMainImgList';
 import DistrictList from './allot/district/DistrictList';
@@ -31,6 +34,15 @@ const Main = React.createClass({
 				break;
 			case 'new_order':
 				page = <NewOrder/>
+				break;
+			case 'verify_order':
+				page = <VerifyOrderList/>
+				break;
+			case 'cancel_order':
+				page = <CanceledOrderList/>
+				break;
+			case 'complete_order':
+				page = <CompletedOrderList />
 				break;
 			case 'person':
 				page = <UserList/>

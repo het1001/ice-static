@@ -63,7 +63,7 @@ const AppMainImgAddDialog = React.createClass({
 		});
 	},
 
-	handleFileUpload(imageKey) {
+	handleFileUpload(key, imageKey) {
 		this.setState({
 			imageKey,
 			confirmLoading: false
@@ -106,7 +106,7 @@ const AppMainImgAddDialog = React.createClass({
 							{...formItemLayout}
 							label="图片"
 						>
-							<FileUpload before={this.fileUploadBefore} callback={this.handleFileUpload} value={this.state.imageKey}/>
+							<FileUpload before={this.fileUploadBefore} callback={this.handleFileUpload} value={this.state.imageKey} commodity={{}}/>
 						</FormItem>
 					</Form>
 				</Modal>

@@ -8,10 +8,9 @@ const subMenus = {
 	promotion_list: ['sub1'],
 	commodityIn_list: ['sub1'],
 	new_order: ['sub2'],
-	no_out_order: ['sub2'],
-	no_to_order: ['sub2'],
-	success_order: ['sub2'],
-	back_order: ['sub2'],
+	verify_order: ['sub2'],
+	cancel_order: ['sub2'],
+	complete_order: ['sub2'],
 	all_order: ['sub2'],
 	person: ['sub3'],
 	position: ['sub3'],
@@ -49,10 +48,9 @@ const MyMenu = React.createClass({
 				</SubMenu>
 				<SubMenu key="sub2" title={<span><Icon type="appstore"/><span>订单管理</span></span>}>
 					<Menu.Item key="new_order"><Icon type="file-unknown"/>新订单</Menu.Item>
-					<Menu.Item key="no_out_order"><Icon type="file"/>待出货订单</Menu.Item>
-					<Menu.Item key="no_to_order"><Icon type="file"/>未送达订单</Menu.Item>
-					<Menu.Item key="success_order"><Icon type="file"/>已完结订单</Menu.Item>
-					<Menu.Item key="back_order"><Icon type="file"/>退订订单</Menu.Item>
+					<Menu.Item key="verify_order"><Icon type="file-unknown"/>确认的订单</Menu.Item>
+					<Menu.Item key="cancel_order"><Icon type="file-unknown"/>取消的订单</Menu.Item>
+					<Menu.Item key="complete_order"><Icon type="file-unknown"/>完成的订单</Menu.Item>
 					<Menu.Item key="all_order"><Icon type="file"/>全部订单</Menu.Item>
 				</SubMenu>
 				<SubMenu key="sub3" title={<span><Icon type="team"/><span>会员管理</span></span>}>
@@ -65,10 +63,6 @@ const MyMenu = React.createClass({
 						<Menu.Item key="salesman"><Icon type="customer-service"/>业务员管理</Menu.Item>
 					</SubMenu>
 					<Menu.Item key="main_img_set"><Icon type="tablet"/>APP广告设置</Menu.Item>
-					<SubMenu key="sub5" title="其他">
-						<Menu.Item key="7">Option 7</Menu.Item>
-						<Menu.Item key="8">Option 8</Menu.Item>
-					</SubMenu>
 				</SubMenu>
 			</Menu>
 		);

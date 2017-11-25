@@ -54,7 +54,7 @@ const Login = React.createClass({
 				},
 				callback: (result) => {
 					if (result.success) {
-						window.location = '/ice/pc/index.htm'
+						window.location.href = '/ice/pc/index.htm' + (param.hash ? ('#' + param.hash) : '');
 					} else {
 						this.setState({
 							nameError: result.errorMsg

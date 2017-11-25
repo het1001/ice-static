@@ -14,14 +14,11 @@ const UserShowDialog = React.createClass({
 			shopName: '',
 			shopAddress: '',
 			shopImgKey: '',
+			freezerType: '',
+			freezerModel: '',
 			isAccess: 1,
 			auditMemo: ''
 		};
-	},
-	componentWillMount() {
-	},
-
-	componentWillReceiveProps(nextProps) {
 	},
 
 	showModal() {
@@ -36,6 +33,8 @@ const UserShowDialog = React.createClass({
 						shopName: result.data.shopName,
 						shopAddress: result.data.shopAddress,
 						shopImgKey: result.data.shopImgKey,
+						freezerType: result.data.freezerType,
+						freezerModel: result.data.freezerModel,
 						isAccess: result.data.isAccess,
 						auditMemo: result.data.auditMemo,
 					});
@@ -47,6 +46,10 @@ const UserShowDialog = React.createClass({
 		this.setState({
 			visible: true
 		});
+	},
+
+	showNativeImg() {
+		this.refs.imgNativeShow.showModal();
 	},
 
 	handleCancel() {
@@ -99,8 +102,20 @@ const UserShowDialog = React.createClass({
 							{...formItemLayout}
 							label="店铺图片"
 						>
-							{this.state.shopImgKey ? <img alt="example" width="200px" height="200px"
+							{this.state.shopImgKey ? <img onClick={this.showNativeImg} alt="example" width="200px" height="200px"
 																						src={"http://ice2016.oss-cn-hangzhou.aliyuncs.com/" + this.state.shopImgKey}/> : ''}
+						</FormItem>
+						<FormItem
+							{...formItemLayout}
+							label="冰柜种类"
+						>
+							{this.state.freezerType}
+						</FormItem>
+						<FormItem
+							{...formItemLayout}
+							label="冰柜型号"
+						>
+							{this.state.freezerModel}
 						</FormItem>
 						{
 							this.state.isAccess === -1 ?
@@ -115,7 +130,7 @@ const UserShowDialog = React.createClass({
 						}
 					</Form>
 				</Modal>
-				<ImgNativeShow title="原始图片" imgKey={this.state.shopImgKey}/>
+				<ImgNativeShow ref="imgNativeShow" title="原始图片" imgKey={this.state.shopImgKey}/>
 			</div>
 		);
 	}

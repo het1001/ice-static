@@ -91,7 +91,7 @@ const SearchBar = React.createClass({
 										optionFilterProp="children"
 									>
 										<Option key="ON_LINE" value="ON_LINE">已启用</Option>
-										<Option key="OFF_LINE" value="OFF_LINE">未启用</Option>
+										<Option key="OFF_LINE" value="OFF_LINE">禁用</Option>
 									</Select>
 								)}
               </FormItem>
