@@ -16,12 +16,26 @@ const CommodityList = React.createClass({
 			name: '',
 			brand: '',
 			status: '',
+			catId: 0,
 			loading: true,
 			com: {},
+			catData: []
 		};
 	},
 	componentWillMount() {
 		this.fetch();
+
+		Ajax({
+			url: '/ice/pc/cat/queryList.json',
+			param: {},
+			callback: (result) => {
+				if (result.success) {
+					this.setState({
+						catData: result.data
+					});
+				} else { }
+			},
+		});
 	},
 	fetch() {
 		this.setState({
@@ -34,6 +48,7 @@ const CommodityList = React.createClass({
 				name: this.state.name,
 				brand: this.state.brand,
 				status: this.state.status,
+				catId: this.state.catId,
 				pageNum: this.state.pagination.current,
 				pageSize: 10
 			},
@@ -75,6 +90,7 @@ const CommodityList = React.createClass({
 				name: search.name,
 				brand: search.brand,
 				status: search.status,
+				catId: search.catId,
 				pagination: page,
 			}, this.fetch);
 		} else {
@@ -217,14 +233,14 @@ const CommodityList = React.createClass({
 		return (
 			<div>
 				<Table
-					title={() => <SearchBar callback={this.handleSearch}/>}
+					title={() => <SearchBar catData={this.state.catData} callback={this.handleSearch}/>}
 					columns={columns}
 					dataSource={this.state.data}
 					pagination={this.state.pagination}
 					loading={this.state.loading}
 					onChange={this.handleTableChange}
 					bordered/>
-				<CommodityDialog ref="commodityDialog" com={this.state.com} callback={this.fetch}/>
+				<CommodityDialog ref="commodityDialog" com={this.state.com} catData={this.state.catData} callback={this.fetch}/>
 			</div>
 		);
 	},

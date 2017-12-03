@@ -16,6 +16,7 @@ const UserShowDialog = React.createClass({
 			shopImgKey: '',
 			freezerType: '',
 			freezerModel: '',
+			standbyPhone: '',
 			isAccess: 1,
 			auditMemo: ''
 		};
@@ -35,6 +36,7 @@ const UserShowDialog = React.createClass({
 						shopImgKey: result.data.shopImgKey,
 						freezerType: result.data.freezerType,
 						freezerModel: result.data.freezerModel,
+						standbyPhone: result.data.standbyPhone,
 						isAccess: result.data.isAccess,
 						auditMemo: result.data.auditMemo,
 					});
@@ -116,6 +118,12 @@ const UserShowDialog = React.createClass({
 							label="冰柜型号"
 						>
 							{this.state.freezerModel}
+						</FormItem>
+						<FormItem
+							{...formItemLayout}
+							label="备用手机号"
+						>
+							{this.state.standbyPhone}
 						</FormItem>
 						{
 							this.state.isAccess === -1 ?

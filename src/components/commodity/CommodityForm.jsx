@@ -1,7 +1,8 @@
 import React from 'react';
-import {Form, Input, InputNumber, Row, Col, Modal, Upload} from 'antd';
-
+import {Form, Input, InputNumber, Row, Col, Select} from 'antd';
+const Option = Select.Option;
 const FormItem = Form.Item;
+
 import Ajax from '../../util/Ajax';
 import styles from './CommodityForm.less';
 import FileUpload from '../FileUpload';
@@ -21,7 +22,22 @@ const CommodityForm = React.createClass({
 			standardPice,
 			pricePi,
 			priceBr,
+			catData: []
 		};
+	},
+
+	componentWillMount() {
+		Ajax({
+			url: '/ice/pc/cat/queryList.json',
+			param: {},
+			callback: (result) => {
+				if (result.success) {
+					this.setState({
+						catData: result.data
+					});
+				} else { }
+			},
+		});
 	},
 
 	count() {
@@ -186,7 +202,7 @@ const CommodityForm = React.createClass({
 									)}
 								</FormItem>
 								<FormItem
-									label="零售价"
+									label="建议零售价"
 									labelCol={{span: 8}}
 									wrapperCol={{span: 14}}
 								>
@@ -208,6 +224,26 @@ const CommodityForm = React.createClass({
 								>
 									{getFieldDecorator('personType')(
 										<Input size="default"/>
+									)}
+								</FormItem>
+							</Col>
+						</Row>
+						<Row>
+							<Col span={10}>
+								<FormItem
+									label="所属分类"
+									labelCol={{span: 8}}
+									wrapperCol={{span: 14}}
+								>
+									{getFieldDecorator('catId')(
+										<Select placeholder="请选择所属类型">
+											<Option value={0}>无</Option>
+											{
+												this.state.catData.map(item => {
+													return <Option value={item.id}>{item.name}</Option>
+												})
+											}
+										</Select>
 									)}
 								</FormItem>
 							</Col>
@@ -284,6 +320,9 @@ export default Form.create({
 			desc: {
 				value: com.desc || '',
 			},
+			catId: {
+				value: com.catId || 0,
+			}
 		};
 	}
 })(CommodityForm);

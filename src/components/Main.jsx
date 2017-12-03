@@ -10,6 +10,7 @@ import AppMainImgList from './appmainimg/AppMainImgList';
 import DistrictList from './allot/district/DistrictList';
 import SalesmanList from './allot/salesman/SalesmanList';
 import PromotionList from './promotion/PromotionList';
+import CatList from './cat/CatList';
 
 const Main = React.createClass({
 	getInitialState() {
@@ -58,6 +59,9 @@ const Main = React.createClass({
 				break;
 			case 'promotion_list':
 				page = <PromotionList/>;
+				break;
+			case 'cat_list':
+				page = <CatList />;
 				break;
 			default:
 		}

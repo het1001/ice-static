@@ -17,6 +17,7 @@ const UserList = React.createClass({
 			},
 			phone: '',
 			state: '',
+			freezerType: '',
 			loading: true,
 			user: {}
 		};
@@ -34,6 +35,7 @@ const UserList = React.createClass({
 			param: {
 				phone: this.state.phone,
 				state: this.state.state,
+				freezerType: this.state.freezerType,
 				pageNum: this.state.pagination.current,
 				pageSize: 10
 			},
@@ -74,6 +76,7 @@ const UserList = React.createClass({
 			this.setState({
 				phone: search.phone,
 				state: search.state,
+				freezerType: search.freezerType,
 				pagination: page,
 			}, this.fetch);
 		} else {

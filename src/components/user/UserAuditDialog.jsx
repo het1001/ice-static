@@ -22,6 +22,7 @@ const UserAuditDialog = React.createClass({
 			freezerType: '',
 			freezerModel: '',
 			arkTime: '',
+			standbyPhone: '',
 			memo: '',
 		};
 	},
@@ -41,7 +42,8 @@ const UserAuditDialog = React.createClass({
 						shopImgKey: result.data.shopImgKey,
 						freezerType: result.data.freezerType,
 						freezerModel: result.data.freezerModel,
-						arkTime: result.data.arkTime
+						arkTime: result.data.arkTime,
+						standbyPhone: result.data.standbyPhone
 					});
 				} else {
 				}
@@ -222,6 +224,12 @@ const UserAuditDialog = React.createClass({
 							label="投柜时间"
 						>
 							{CommonUtil.pareDate(this.state.arkTime, 'yyyy-MM-dd')}
+						</FormItem>
+						<FormItem
+							{...formItemLayout}
+							label="备用手机号"
+						>
+							{this.state.standbyPhone}
 						</FormItem>
 					</Form>
 				</Modal>

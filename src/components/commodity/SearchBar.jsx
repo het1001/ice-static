@@ -1,6 +1,6 @@
 import React from 'react';
-import {Form, Input, Row, Col, Icon, Button, DatePicker, Checkbox} from 'antd';
-
+import {Form, Input, Row, Col, Select, Button, DatePicker, Checkbox} from 'antd';
+const Option = Select.Option;
 const FormItem = Form.Item;
 import CommodityDialog from './CommodityDialog';
 
@@ -68,6 +68,24 @@ const SearchBar = React.createClass({
 							>
                 {getFieldDecorator('brand')(
 									<Input placeholder="请输入厂家/品牌" size="default"/>
+								)}
+              </FormItem>
+            </Col>
+						<Col sm={6}>
+              <FormItem
+								label="分类"
+								labelCol={{span: 10}}
+								wrapperCol={{span: 14}}
+							>
+                {getFieldDecorator('catId')(
+									<Select placeholder="请选择所属类型">
+										<Option value={0}>无</Option>
+										{
+											this.props.catData.map(item => {
+												return <Option value={item.id}>{item.name}</Option>
+											})
+										}
+									</Select>
 								)}
               </FormItem>
             </Col>

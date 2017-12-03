@@ -47,7 +47,7 @@ const SearchBar = React.createClass({
 			<span>
         <Form horizontal className="ant-advanced-search-form">
           <Row gutter={16}>
-            <Col sm={8}>
+            <Col sm={6}>
               <FormItem
 								label="手机号"
 								labelCol={{span: 10}}
@@ -58,7 +58,7 @@ const SearchBar = React.createClass({
 								)}
               </FormItem>
             </Col>
-            <Col sm={8}>
+            <Col sm={6}>
               <FormItem
 								label="状态"
 								labelCol={{span: 10}}
@@ -77,7 +77,18 @@ const SearchBar = React.createClass({
 								)}
               </FormItem>
             </Col>
-            <Col sm={8}>
+						<Col sm={6}>
+              <FormItem
+								label="冰柜种类"
+								labelCol={{span: 10}}
+								wrapperCol={{span: 14}}
+							>
+                {getFieldDecorator('freezerType')(
+									<Input size="default"/>
+								)}
+              </FormItem>
+            </Col>
+            <Col sm={6}>
               <Button type="primary" style={{marginLeft: '50px', marginRight: '20px'}} htmlType="submit"
 											onClick={this.handleSubmit}>搜索</Button>
               <Button onClick={this.handleReset}>重置</Button>

@@ -4,7 +4,6 @@ import {Form, Input, InputNumber, Row, Col, Modal, Upload, message} from 'antd';
 const FormItem = Form.Item;
 
 import Ajax from '../../util/Ajax';
-import styles from './CommodityForm.less';
 import CommodityForm from './CommodityForm';
 
 const CommodityDialog = React.createClass({
@@ -88,7 +87,7 @@ const CommodityDialog = React.createClass({
 				<Modal title={title} visible={this.state.visible} width="1000px"
 							 onOk={this.handleOk} onCancel={this.handleCancel}
 				>
-					<CommodityForm ref="commodityForm" com={this.props.com}/>
+					<CommodityForm ref="commodityForm" com={this.props.com} catData={this.props.catData}/>
 				</Modal>
 			</div>
 		);
