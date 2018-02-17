@@ -7,21 +7,21 @@ const Option = Select.Option;
 import Ajax from '../../util/Ajax';
 import CommonUtil from '../../util/CommonUtil';
 
-class CatDialog extends React.Component {
-	state = {
-		visible: false,
-		id: 0,
-		name: '',
-		orderr: ''
+class BrandDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			visible: false,
+			id: 0,
+			name: ''
+		};
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.isEdit) {
 			this.setState({
 				id: nextProps.obj.id,
-				name: nextProps.obj.name,
-				orderr: nextProps.obj.orderr,
-				type: nextProps.obj.type,
+				name: nextProps.obj.name
 			});
 		}
 	}
@@ -35,7 +35,6 @@ class CatDialog extends React.Component {
 			this.setState({
 				id: 0,
 				name: '',
-				orderr: '',
 				visible: true
 			});
 		}
@@ -47,20 +46,13 @@ class CatDialog extends React.Component {
 			return;
 		}
 
-		if (!this.state.orderr) {
-			message.error("顺序不能为空");
-			return;
-		}
-
 		const params = {};
 		params.id = this.state.id;
 		params.name = this.state.name;
-		params.orderr = this.state.orderr;
-		params.type = this.props.type;
 
 		if (!this.props.isEdit) {
 			Ajax({
-				url: '/ice/pc/cat/create.json',
+				url: '/ice/pc/brand/create.json',
 				method: 'post',
 				param: JSON.stringify(params),
 				callback: (result) => {
@@ -75,7 +67,7 @@ class CatDialog extends React.Component {
 			});
 		} else {
 			Ajax({
-				url: '/ice/pc/cat/update.json',
+				url: '/ice/pc/brand/update.json',
 				method: 'post',
 				param: JSON.stringify(params),
 				callback: (result) => {
@@ -125,20 +117,10 @@ class CatDialog extends React.Component {
 										 onChange={CommonUtil.onInputChange.bind(this, 'name')}/>
 						</FormItem>
 					</Form>
-					<Form>
-						<FormItem
-							{...formItemLayout}
-							label="顺序"
-							required
-						>
-							<Input placeholder="输入序号" size="default" value={this.state.orderr}
-										 onChange={CommonUtil.onInputChange.bind(this, 'orderr')}/>
-						</FormItem>
-					</Form>
 				</Modal>
 			</div>
 		);
 	}
 };
 
-export default CatDialog;
+export default BrandDialog;

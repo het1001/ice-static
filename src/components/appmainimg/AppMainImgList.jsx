@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Icon, Popconfirm, message} from 'antd';
+import {Table, Icon, Popconfirm, message, Divider} from 'antd';
 import Ajax from '../../util/Ajax';
 
 import SearchBar from './SearchBar';
@@ -7,9 +7,10 @@ import ImgNativeShow from '../ImgNativeShow';
 
 import AppMainImgEditDialog from './AppMainImgEditDialog';
 
-const AppMainImgList = React.createClass({
-	getInitialState() {
-		return {
+class AppMainImgList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 			pagination: {
 				current: 1,
@@ -21,10 +22,19 @@ const AppMainImgList = React.createClass({
 			active: '',
 			main: '',
 		};
-	},
+
+		this.fetch = this.fetch.bind(this);
+		this.handleTableChange = this.handleTableChange.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
+		this.viewImg = this.viewImg.bind(this);
+		this.edit = this.edit.bind(this);
+		this.delete = this.delete.bind(this);
+	}
+
 	componentWillMount() {
 		this.fetch();
-	},
+	}
+
 	fetch() {
 		this.setState({
 			loading: true
@@ -56,7 +66,7 @@ const AppMainImgList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleTableChange(pagination, filters, sorter) {
 		const pager = this.state.pagination;
@@ -66,7 +76,7 @@ const AppMainImgList = React.createClass({
 		}, () => {
 			this.fetch();
 		});
-	},
+	}
 
 	handleSearch(search) {
 		if (search) {
@@ -82,7 +92,7 @@ const AppMainImgList = React.createClass({
 		} else {
 			this.fetch();
 		}
-	},
+	}
 
 	viewImg(record) {
 		this.setState({
@@ -90,7 +100,7 @@ const AppMainImgList = React.createClass({
 		}, () => {
 			this.refs.imgNativeShow.showModal();
 		});
-	},
+	}
 
 	edit(record) {
 		this.setState({
@@ -98,7 +108,7 @@ const AppMainImgList = React.createClass({
 		}, () => {
 			this.refs.appMainImgEditDialog.showModal();
 		});
-	},
+	}
 
 	delete(record) {
 		Ajax({
@@ -116,7 +126,7 @@ const AppMainImgList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	render() {
 		const columns = [
@@ -145,9 +155,9 @@ const AppMainImgList = React.createClass({
 				render: (text, record) => (
 					<span>
                         <a onClick={this.viewImg.bind(this, record)}>查看</a>
-                        <span className="ant-divider"/>
+                        <Divider type="vertical" />
                         <a onClick={this.edit.bind(this, record)}>编辑</a>
-                        <span className="ant-divider"/>
+                        <Divider type="vertical" />
                         <Popconfirm title="确定要删除该图片吗?" onConfirm={this.delete.bind(this, record)}
 																		okText="是" cancelText="否">
                             <a>删除</a>
@@ -170,7 +180,7 @@ const AppMainImgList = React.createClass({
 				<AppMainImgEditDialog ref="appMainImgEditDialog" callback={this.fetch} model={this.state.model}/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default AppMainImgList;

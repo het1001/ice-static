@@ -2,30 +2,28 @@ import React from 'react';
 
 import {Modal} from 'antd';
 
-const NoAccessModel = React.createClass({
-	getInitialState() {
-		return {
-			visible: false,
+class NoAccessModel extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			visible: false
 		};
-	},
-	componentWillMount() {
-	},
 
-	componentWillReceiveProps(nextProps) {
-		//console.log(nextProps.com);
-	},
+		this.showModal = this.showModal.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+	}
 
 	showModal() {
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	render() {
 		return (
@@ -38,7 +36,7 @@ const NoAccessModel = React.createClass({
 				</Modal>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default NoAccessModel;

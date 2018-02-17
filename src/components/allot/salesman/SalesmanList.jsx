@@ -1,14 +1,15 @@
 import React from 'react';
-import {Table, message, Popconfirm} from 'antd';
+import {Table, message, Popconfirm, Divider} from 'antd';
 import Ajax from '../../../util/Ajax';
 import SearchBar from './SearchBar';
 import CommonUtil from '../../../util/CommonUtil';
 
 import SalesmanDialog from './SalesmanDialog';
 
-const SalesmanList = React.createClass({
-	getInitialState() {
-		return {
+class SalesmanList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 			pagination: {
 				current: 1,
@@ -22,7 +23,14 @@ const SalesmanList = React.createClass({
 			deliveryMens: [],
 			salesmans: [],
 		};
-	},
+
+		this.fetch = this.fetch.bind(this);
+		this.handleTableChange = this.handleTableChange.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
+		this.edit = this.edit.bind(this);
+		this.delete = this.delete.bind(this);
+	}
+
 	componentWillMount() {
 		this.fetch();
 		Ajax({
@@ -39,7 +47,8 @@ const SalesmanList = React.createClass({
 				}
 			},
 		});
-	},
+	}
+
 	fetch() {
 		this.setState({
 			loading: true
@@ -70,7 +79,7 @@ const SalesmanList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleTableChange(pagination, filters, sorter) {
 		const pager = this.state.pagination;
@@ -80,7 +89,7 @@ const SalesmanList = React.createClass({
 		}, () => {
 			this.fetch();
 		});
-	},
+	}
 
 	handleSearch(search) {
 		if (search) {
@@ -95,7 +104,7 @@ const SalesmanList = React.createClass({
 		} else {
 			this.fetch();
 		}
-	},
+	}
 
 	edit(record) {
 		this.setState({
@@ -104,7 +113,7 @@ const SalesmanList = React.createClass({
 		}, () => {
 			this.refs.districtDialog.showModal(false);
 		});
-	},
+	}
 
 	delete(record) {
 		Ajax({
@@ -120,7 +129,7 @@ const SalesmanList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	render() {
 		const columns = [
@@ -152,7 +161,7 @@ const SalesmanList = React.createClass({
 				render: (text, record) => (
 					<span>
                       <a onClick={this.edit.bind(this, record)}>编辑</a>
-                      <span className="ant-divider"/>
+                      <Divider type="vertical" />
                       <Popconfirm title="确定要删除吗?" onConfirm={this.delete.bind(this, record)}
 																	okText="是" cancelText="否">
                         <a>删除</a>
@@ -184,7 +193,7 @@ const SalesmanList = React.createClass({
 					callback={this.fetch}/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default SalesmanList;

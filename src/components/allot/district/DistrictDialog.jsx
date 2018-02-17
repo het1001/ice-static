@@ -6,18 +6,23 @@ const Option = Select.Option;
 
 import Ajax from '../../../util/Ajax';
 
-const DistrictDialog = React.createClass({
-	getInitialState() {
-		return {
+class DistrictDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			visible: false,
 			id: 0,
 			name: '',
 			districtor: [],
 			salesman: []
 		};
-	},
-	componentWillMount() {
-	},
+
+		this.showModal = this.showModal.bind(this);
+		this.handleOk = this.handleOk.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+		this.onNameChange = this.onNameChange.bind(this);
+		this.handleSelectChange = this.handleSelectChange.bind(this);
+	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.isEdit) {
@@ -26,8 +31,7 @@ const DistrictDialog = React.createClass({
 				name: nextProps.obj.name
 			});
 		}
-
-	},
+	}
 
 	showModal(isAdd) {
 		if (!isAdd) {
@@ -58,7 +62,7 @@ const DistrictDialog = React.createClass({
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	handleOk() {
 		if (!this.state.name) {
@@ -115,24 +119,24 @@ const DistrictDialog = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	onNameChange(e) {
 		this.setState({
 			name: e.target.value
 		});
-	},
+	}
 
 	handleSelectChange(key, e) {
 		this.state[key] = e;
 		this.setState({});
-	},
+	}
 
 	render() {
 		const formItemLayout = {
@@ -208,7 +212,7 @@ const DistrictDialog = React.createClass({
 				</Modal>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default DistrictDialog;

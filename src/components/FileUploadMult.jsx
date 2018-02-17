@@ -5,23 +5,28 @@ import './fileUploadMult.less';
 
 import Ajax from '../util/Ajax';
 
-const FileUploadMult = React.createClass({
-	getInitialState() {
-		return {
+class FileUploadMult extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			previewVisible: false,
 			previewImage: '',
 			fileList: []
 		};
-	},
+
+		this.reloadFile = this.reloadFile.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+	}
+
 	componentWillMount() {
 		this.reloadFile(this.props);
-	},
+	}
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.value !== nextProps.value || this.props.commodity.id !== nextProps.commodity.id) {
 			this.reloadFile(nextProps);
 		}
-	},
+	}
 
 	reloadFile(props) {
 		if (props.value) {
@@ -47,42 +52,44 @@ const FileUploadMult = React.createClass({
 				return;
 			}
 
-			Ajax({
-				url: '/ice/pc/commodityPic/queryOtherPicKeys.json',
-				param: {
-					comId: props.commodity.id
-				},
-				callback: (result) => {
-					if (result.success && result.data) {
-						this.props.callback('fileKeys', result.data.map((item) => {
-							return item.picKey
-						}));
+			if (props.commodity.id) {
+				Ajax({
+					url: '/ice/pc/commodityPic/queryOtherPicKeys.json',
+					param: {
+						comId: props.commodity.id
+					},
+					callback: (result) => {
+						if (result.success && result.data) {
+							this.props.callback('fileKeys', result.data.map((item) => {
+								return item.picKey
+							}));
 
-						this.setState({
-							fileList: result.data.map((item) => {
-								return {
-									key: item.id,
-									uid: item.id,
-									name: item.picKey,
-									url: 'http://ice2016.oss-cn-hangzhou.aliyuncs.com/' + item.picKey,
-									response: {
-										data: item.picKey
-									},
-									status: 'done',
-								};
-							})
-						});
-					} else {
+							this.setState({
+								fileList: result.data.map((item) => {
+									return {
+										key: item.id,
+										uid: item.id,
+										name: item.picKey,
+										url: 'http://ice2016.oss-cn-hangzhou.aliyuncs.com/' + item.picKey,
+										response: {
+											data: item.picKey
+										},
+										status: 'done',
+									};
+								})
+							});
+						} else {
 
-					}
-				},
-			});
+						}
+					},
+				});
+			}
 		}
-	},
+	}
 
 	handleCancel() {
 		this.setState({previewVisible: false});
-	},
+	}
 
 	render() {
 		const props = {
@@ -147,7 +154,7 @@ const FileUploadMult = React.createClass({
 				</Modal>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default FileUploadMult;

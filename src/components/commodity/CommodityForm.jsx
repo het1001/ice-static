@@ -8,37 +8,71 @@ import styles from './CommodityForm.less';
 import FileUpload from '../FileUpload';
 import FileUploadMult from '../FileUploadMult';
 
-const CommodityForm = React.createClass({
-	getInitialState() {
+class CommodityForm extends React.Component {
+	constructor(props) {
+		super(props);
+
 		let priceBr = 0, standardPice = 0, pricePi = 0;
-		if (this.props.com && this.props.com.priceBr && this.props.com.priceBr > 0) {
-			standardPice = this.props.com.standardPice || 0;
-			pricePi = this.props.com.pricePi || 0;
-			priceBr = this.props.com.priceBr;
+		if (props.com && props.com.priceBr && props.com.priceBr > 0) {
+			standardPice = props.com.standardPice || 0;
+			pricePi = props.com.pricePi || 0;
+			priceBr = props.com.priceBr;
 		}
 
-		return {
+		this.state = {
 			visible: false,
 			standardPice,
 			pricePi,
 			priceBr,
-			catData: []
+			brandData: [],
+			pricCatData: [],
+			packCatData: []
 		};
-	},
+
+		this.count = this.count.bind(this);
+		this.showModal = this.showModal.bind(this);
+		this.checkName = this.checkName.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+		this.setFieldValue = this.setFieldValue.bind(this);
+	}
 
 	componentWillMount() {
 		Ajax({
-			url: '/ice/pc/cat/queryList.json',
+			url: '/ice/pc/brand/queryAll.json?',
 			param: {},
 			callback: (result) => {
 				if (result.success) {
 					this.setState({
-						catData: result.data
+						brandData: result.data
 					});
 				} else { }
 			},
 		});
-	},
+
+		Ajax({
+			url: '/ice/pc/cat/queryPriceList.json?',
+			param: {},
+			callback: (result) => {
+				if (result.success) {
+					this.setState({
+						pricCatData: result.data
+					});
+				} else { }
+			},
+		});
+
+		Ajax({
+			url: '/ice/pc/cat/queryPackageList.json?',
+			param: {},
+			callback: (result) => {
+				if (result.success) {
+					this.setState({
+						packCatData: result.data
+					});
+				} else { }
+			},
+		});
+	}
 
 	count() {
 		if (this.state.standardPice > 0) {
@@ -50,13 +84,13 @@ const CommodityForm = React.createClass({
 				priceBr: 0
 			});
 		}
-	},
+	}
 
 	showModal() {
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	checkName(value, callback) {
 		if (!value) {
@@ -82,28 +116,28 @@ const CommodityForm = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	setButtonLoading() {
-	},
+	}
 
 	setFieldValue(key, value) {
 		const obj = {};
 		obj[key] = value;
 		this.props.form.setFieldsValue(obj);
-	},
+	}
 
 	render() {
 		const {getFieldDecorator, getFieldError} = this.props.form;
 
 		return (
-			<Form horizontal className="ant-advanced-search-form">
+			<Form className="ant-advanced-search-form">
 				<Row>
 					<Col span={18}>
 						<Row>
@@ -182,12 +216,37 @@ const CommodityForm = React.createClass({
 									)} 元
 								</FormItem>
 								<FormItem
+									label="建议零售价"
+									labelCol={{span: 8}}
+									wrapperCol={{span: 14}}
+								>
+									{getFieldDecorator('retailPriceBr')(
+										<InputNumber step={0.01} size="default" className={styles.inputUnit}/>
+									)} 元
+								</FormItem>
+								<FormItem
 									label="条形码"
 									labelCol={{span: 8}}
 									wrapperCol={{span: 14}}
 								>
 									{getFieldDecorator('barCode')(
 										<Input placeholder="输入条形码" size="default"/>
+									)}
+								</FormItem>
+								<FormItem
+									label="价格分类"
+									labelCol={{span: 8}}
+									wrapperCol={{span: 14}}
+								>
+									{getFieldDecorator('pricCatId')(
+										<Select placeholder="请选择所属价格分类">
+											<Option value={0}>无</Option>
+											{
+												this.state.pricCatData.map(item => {
+													return <Option value={item.id}>{item.name}</Option>
+												})
+											}
+										</Select>
 									)}
 								</FormItem>
 							</Col>
@@ -197,18 +256,26 @@ const CommodityForm = React.createClass({
 									labelCol={{span: 8}}
 									wrapperCol={{span: 14}}
 								>
-									{getFieldDecorator('brand')(
-										<Input placeholder="请输入厂家/品牌" size="default"/>
+									{getFieldDecorator('brandId')(
+										<Select placeholder="请选择品牌">
+											<Option value={0}>无</Option>
+											{
+												this.state.brandData.map(item => {
+													return <Option value={item.id}>{item.name}</Option>
+												})
+											}
+										</Select>
 									)}
 								</FormItem>
 								<FormItem
-									label="建议零售价"
+									label="质量"
 									labelCol={{span: 8}}
 									wrapperCol={{span: 14}}
+									help={getFieldError('weight')}
 								>
-									{getFieldDecorator('retailPriceBr')(
-										<InputNumber step={0.01} size="default" className={styles.inputUnit}/>
-									)} 元
+									{getFieldDecorator('weight')(
+										<InputNumber step={1} max={99999} size="default" className={styles.inputUnit}/>
+									)} g/支
 								</FormItem>
 								<FormItem
 									label="上柜价/支"
@@ -226,26 +293,27 @@ const CommodityForm = React.createClass({
 										<Input size="default"/>
 									)}
 								</FormItem>
-							</Col>
-						</Row>
-						<Row>
-							<Col span={10}>
 								<FormItem
-									label="所属分类"
+									label="包装分类"
 									labelCol={{span: 8}}
 									wrapperCol={{span: 14}}
 								>
-									{getFieldDecorator('catId')(
-										<Select placeholder="请选择所属类型">
+									{getFieldDecorator('packCatId')(
+										<Select placeholder="请选择所属包装类型">
 											<Option value={0}>无</Option>
 											{
-												this.state.catData.map(item => {
+												this.state.packCatData.map(item => {
 													return <Option value={item.id}>{item.name}</Option>
 												})
 											}
 										</Select>
 									)}
 								</FormItem>
+							</Col>
+						</Row>
+						<Row>
+							<Col span={10}>
+
 							</Col>
 						</Row>
 						<Row>
@@ -256,7 +324,7 @@ const CommodityForm = React.createClass({
 									wrapperCol={{span: 19}}
 								>
 									{getFieldDecorator('desc')(
-										<Input type="textarea" autosize={{minRows: 3, maxRows: 6}} size="default" style={{width: '100%'}}/>
+										<Input.TextArea autosize={{minRows: 3, maxRows: 6}} size="default" style={{width: '100%'}}/>
 									)}
 								</FormItem>
 							</Col>
@@ -285,44 +353,50 @@ const CommodityForm = React.createClass({
 				</Row>
 			</Form>
 		);
-	},
-});
+	}
+};
 
 export default Form.create({
 	mapPropsToFields: (props) => {
 		const {com} = props;
 
 		return {
-			name: {
-				value: com.name ? String(com.name) : null,
-			},
-			standardPice: {
+			name: Form.createFormField({
+				value: com.name ? String(com.name) : '',
+			}),
+			weight: Form.createFormField({
+				value: com.weight ? com.weight : '',
+			}),
+			standardPice: Form.createFormField({
 				value: com.standardPice ? com.standardPice : 0,
-			},
-			pricePi: {
+			}),
+			pricePi: Form.createFormField({
 				value: com.pricePi || '',
-			},
-			retailPriceBr: {
+			}),
+			retailPriceBr: Form.createFormField({
 				value: com.retailPriceBr || '',
-			},
-			brand: {
-				value: com.brand || '',
-			},
-			priceBr: {
+			}),
+			brandId: Form.createFormField({
+				value: com.brandId || '',
+			}),
+			priceBr: Form.createFormField({
 				value: com.priceBr || '',
-			},
-			personType: {
+			}),
+			personType: Form.createFormField({
 				value: com.personType || '',
-			},
-			barCode: {
+			}),
+			barCode: Form.createFormField({
 				value: com.barCode || '',
-			},
-			desc: {
+			}),
+			desc: Form.createFormField({
 				value: com.desc || '',
-			},
-			catId: {
-				value: com.catId || 0,
-			}
+			}),
+			pricCatId: Form.createFormField({
+				value: com.pricCatId || 0,
+			}),
+			packCatId: Form.createFormField({
+				value: com.packCatId || 0,
+			})
 		};
 	}
 })(CommodityForm);

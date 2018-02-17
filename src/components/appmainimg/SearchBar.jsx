@@ -5,12 +5,18 @@ const FormItem = Form.Item;
 
 import AppMainImgAddDialog from './AppMainImgAddDialog';
 
-const SearchBar = React.createClass({
-	getInitialState() {
-		return {
+class SearchBar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			active: false,
 		};
-	},
+
+		this.handleReset = this.handleReset.bind(this);
+		this.onActiveChange = this.onActiveChange.bind(this);
+		this.newMainImg = this.newMainImg.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 
 	handleReset(e) {
 		e.preventDefault();
@@ -18,17 +24,17 @@ const SearchBar = React.createClass({
 		this.setState({
 			active: false,
 		});
-	},
+	}
 
 	onActiveChange(e) {
 		this.setState({
 			active: e.target.checked
 		});
-	},
+	}
 
 	newMainImg() {
 		this.refs.appMainImgAddDialog.showModal();
-	},
+	}
 
 	handleSubmit(e) {
 		e && e.preventDefault();
@@ -42,14 +48,14 @@ const SearchBar = React.createClass({
 
 				this.props.callback(values);
 		});
-	},
+	}
 
 	render() {
 		const {getFieldDecorator} = this.props.form;
 
 		return (
 			<span>
-        <Form horizontal className="ant-advanced-search-form">
+        <Form className="ant-advanced-search-form">
           <Row gutter={16}>
             <Col sm={10}>
               <FormItem
@@ -86,7 +92,7 @@ const SearchBar = React.createClass({
         <AppMainImgAddDialog ref="appMainImgAddDialog" callback={this.props.callback}/>
       </span>
 		);
-	},
-});
+	}
+};
 
 export default Form.create()(SearchBar);

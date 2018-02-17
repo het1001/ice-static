@@ -1,43 +1,69 @@
 import React from 'react';
-import {Table, Icon, Button, Popconfirm, message} from 'antd';
+import {Table, Icon, Divider, Popconfirm, message} from 'antd';
 import Ajax from '../../util/Ajax';
 import SearchBar from './SearchBar';
 
 import CommodityDialog from './CommodityDialog';
 
-const CommodityList = React.createClass({
-	getInitialState() {
-		return {
-			data: [],
-			pagination: {
-				current: 1,
-				total: 0,
-			},
-			name: '',
-			brand: '',
-			status: '',
-			catId: 0,
-			loading: true,
-			com: {},
-			catData: []
-		};
-	},
+class CommodityList extends React.Component {
+	state = {data: [],
+		pagination: {
+			current: 1,
+			total: 0,
+		},
+		name: '',
+		brandId: '',
+		status: '',
+		pricCatId: 0,
+		packCatId: 0,
+		loading: true,
+		com: {},
+		brandData: [],
+		pricCatData: [],
+		packCatData: [],
+	}
+
 	componentWillMount() {
 		this.fetch();
 
 		Ajax({
-			url: '/ice/pc/cat/queryList.json',
+			url: '/ice/pc/brand/queryAll.json?',
 			param: {},
 			callback: (result) => {
 				if (result.success) {
 					this.setState({
-						catData: result.data
+						brandData: result.data
 					});
 				} else { }
 			},
 		});
-	},
-	fetch() {
+
+		Ajax({
+			url: '/ice/pc/cat/queryPriceList.json',
+			param: {},
+			callback: (result) => {
+				if (result.success) {
+					this.setState({
+						pricCatData: result.data
+					});
+				} else { }
+			},
+		});
+
+		Ajax({
+			url: '/ice/pc/cat/queryPackageList.json',
+			param: {},
+			callback: (result) => {
+				if (result.success) {
+					this.setState({
+						packCatData: result.data
+					});
+				} else { }
+			},
+		});
+	}
+
+	fetch = () => {
 		this.setState({
 			loading: true
 		});
@@ -46,9 +72,10 @@ const CommodityList = React.createClass({
 			url: '/ice/pc/commodity/queryList.json',
 			param: {
 				name: this.state.name,
-				brand: this.state.brand,
+				brandId: this.state.brandId,
 				status: this.state.status,
-				catId: this.state.catId,
+				pricCatId: this.state.pricCatId,
+				packCatId: this.state.packCatId,
 				pageNum: this.state.pagination.current,
 				pageSize: 10
 			},
@@ -69,9 +96,9 @@ const CommodityList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
-	handleTableChange(pagination, filters, sorter) {
+	handleTableChange = (pagination, filters, sorter) => {
 		const pager = this.state.pagination;
 		pager.current = pagination.current;
 		this.setState({
@@ -79,34 +106,35 @@ const CommodityList = React.createClass({
 		}, () => {
 			this.fetch();
 		});
-	},
+	}
 
-	handleSearch(search) {
+	handleSearch = (search) => {
 		if (search) {
 			const page = this.state.pagination;
 			page.current = 1;
 
 			this.setState({
 				name: search.name,
-				brand: search.brand,
+				brandId: search.brandId,
 				status: search.status,
-				catId: search.catId,
+				pricCatId: search.pricCatId,
+				packCatId: search.packCatId,
 				pagination: page,
 			}, this.fetch);
 		} else {
 			this.fetch();
 		}
-	},
+	}
 
-	editCom(record) {
+	editCom = (record) => {
 		this.setState({
 			com: record
 		}, () => {
 			this.refs.commodityDialog.showModal();
 		});
-	},
+	}
 
-	onlineCom(record) {
+	onlineCom = (record) => {
 		Ajax({
 			url: '/ice/pc/commodity/online.json',
 			method: 'post',
@@ -122,9 +150,9 @@ const CommodityList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
-	offlineCom(record) {
+	offlineCom = (record) => {
 		Ajax({
 			url: '/ice/pc/commodity/offline.json',
 			method: 'post',
@@ -140,17 +168,16 @@ const CommodityList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	render() {
 		const columns = [
 			{
 				title: '序号',
-				width: '3%',
+				width: '4%',
 				dataIndex: 'id',
 			}, {
 				title: '名称',
-				width: '7%',
 				dataIndex: 'name',
 				render: (text, record) => (
 					(record.state === 0) ? <span><Icon type="cloud-o" style={{color: 'red'}}/> {text}</span>
@@ -159,7 +186,6 @@ const CommodityList = React.createClass({
 				),
 			}, {
 				title: '厂家/品牌',
-				width: '5%',
 				dataIndex: 'brand',
 			}, {
 				title: '规格/件',
@@ -204,16 +230,24 @@ const CommodityList = React.createClass({
 						<span style={{color: 'red', fontWeight: 'bold'}}>{text}</span>
 				),
 			}, {
-				title: '销量（件）',
+				title: '总销量（件）',
 				width: '5%',
 				dataIndex: 'sales',
 			}, {
+				title: '昨日销量（件）',
+				width: '5%',
+				dataIndex: 'daySales',
+			}, {
+				title: '周销量（件）',
+				width: '5%',
+				dataIndex: 'weekSales',
+			}, {
 				title: '操作',
-				width: '7%',
+				width: '130px',
 				render: (text, record) => (
 					<span>
-                        <a href="#commodity_list" onClick={this.editCom.bind(this, record)}>编辑</a>
-                        <span className="ant-divider"/>
+						<a href="#commodity_list" onClick={this.editCom.bind(this, record)}>编辑</a>
+						<Divider type="vertical" />
 						{
 							record.state === 0 ?
 								<Popconfirm title="确定要上线吗?" onConfirm={this.onlineCom.bind(this, record)} okText="是"
@@ -233,7 +267,7 @@ const CommodityList = React.createClass({
 		return (
 			<div>
 				<Table
-					title={() => <SearchBar catData={this.state.catData} callback={this.handleSearch}/>}
+					title={() => <SearchBar brandData={this.state.brandData} pricCatData={this.state.pricCatData} packCatData={this.state.packCatData} callback={this.handleSearch}/>}
 					columns={columns}
 					dataSource={this.state.data}
 					pagination={this.state.pagination}
@@ -243,7 +277,7 @@ const CommodityList = React.createClass({
 				<CommodityDialog ref="commodityDialog" com={this.state.com} catData={this.state.catData} callback={this.fetch}/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default CommodityList;

@@ -10,19 +10,23 @@ import AppMainImgList from './appmainimg/AppMainImgList';
 import DistrictList from './allot/district/DistrictList';
 import SalesmanList from './allot/salesman/SalesmanList';
 import PromotionList from './promotion/PromotionList';
-import CatList from './cat/CatList';
+import BrandList from './brand/BrandList';
+import PriceCatList from './cat/PriceCatList';
+import PackageCatList from './cat/PackageCatList';
 
-const Main = React.createClass({
-	getInitialState() {
-		return {
+class Main extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			pageKey: this.props.currentMenu,
 		};
-	},
-	changePage(key) {
+	}
+
+	changePage = (key) => {
 		this.setState({
 			pageKey: key
 		});
-	},
+	}
 
 	render() {
 		let page = <span>功能建设中，敬请期待... ...</span>;
@@ -60,18 +64,24 @@ const Main = React.createClass({
 			case 'promotion_list':
 				page = <PromotionList/>;
 				break;
-			case 'cat_list':
-				page = <CatList />;
+			case 'brand_cat':
+				page = <BrandList />;
+				break;
+			case 'price_cat':
+				page = <PriceCatList />;
+				break;
+			case 'pack_cat':
+				page = <PackageCatList />;
 				break;
 			default:
 		}
 
 		return (
-			<div style={{width: '80%', paddingLeft: '30px', float: 'left'}}>
+			<div style={{width: '88%', padding: '30px', float: 'left'}}>
 				{page}
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default Main;

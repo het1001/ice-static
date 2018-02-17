@@ -2,15 +2,17 @@ import React from 'react';
 import {Modal, Table} from 'antd';
 import Ajax from '../../util/Ajax';
 
-const ComInDialogView = React.createClass({
-	getInitialState() {
-		return {
+class ComInDialogView extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 		};
-	},
-	componentWillMount() {
 
-	},
+		this.fetch = this.fetch.bind(this);
+		this.showModal = this.showModal.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+	}
 
 	fetch() {
 		Ajax({
@@ -31,7 +33,7 @@ const ComInDialogView = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	showModal() {
 		this.setState({
@@ -39,16 +41,13 @@ const ComInDialogView = React.createClass({
 		});
 
 		this.fetch();
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
-
-	handleOk() {
-	},
+	}
 
 	render() {
 		const columns = [
@@ -120,7 +119,7 @@ const ComInDialogView = React.createClass({
 				</Modal>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default ComInDialogView;

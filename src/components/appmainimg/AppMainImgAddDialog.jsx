@@ -6,15 +6,23 @@ const FormItem = Form.Item;
 import Ajax from '../../util/Ajax';
 import FileUpload from '../FileUpload';
 
-const AppMainImgAddDialog = React.createClass({
-	getInitialState() {
-		return {
+class AppMainImgAddDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			visible: false,
 			confirmLoading: false,
 			name: '',
 			imageKey: ''
 		};
-	},
+
+		this.showModal = this.showModal.bind(this);
+		this.handleOk = this.handleOk.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+		this.fileUploadBefore = this.fileUploadBefore.bind(this);
+		this.handleFileUpload = this.handleFileUpload.bind(this);
+		this.onNameChange = this.onNameChange.bind(this);
+	}
 
 	showModal() {
 		this.setState({
@@ -22,7 +30,7 @@ const AppMainImgAddDialog = React.createClass({
 			imageKey: '',
 			visible: true
 		});
-	},
+	}
 
 	handleOk() {
 		if (!this.state.name) {
@@ -49,32 +57,32 @@ const AppMainImgAddDialog = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	fileUploadBefore() {
 		this.setState({
 			confirmLoading: true
 		});
-	},
+	}
 
 	handleFileUpload(key, imageKey) {
 		this.setState({
 			imageKey,
 			confirmLoading: false
 		});
-	},
+	}
 
 	onNameChange(e) {
 		this.setState({
 			name: e.target.value
 		});
-	},
+	}
 
 	render() {
 		const formItemLayout = {
@@ -112,7 +120,7 @@ const AppMainImgAddDialog = React.createClass({
 				</Modal>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default AppMainImgAddDialog;

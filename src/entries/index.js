@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Alert, message } from 'antd';
+import { Alert, LocaleProvider } from 'antd';
 import MyMenu from '../components/MyMenu';
 import Main from '../components/Main';
+
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class App extends React.Component {
       date: ''
     };
   }
-  callback(key) {
+  callback = (key) => {
     this.refs.main.changePage(key);
   }
 
@@ -44,4 +46,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<LocaleProvider locale={zhCN}><App /></LocaleProvider>, document.getElementById('root'));

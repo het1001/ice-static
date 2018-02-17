@@ -6,20 +6,27 @@ const FormItem = Form.Item;
 import Ajax from '../../util/Ajax';
 import ImgNativeShow from '../ImgNativeShow';
 
-const AppMainImgEditDialog = React.createClass({
-	getInitialState() {
-		return {
+class AppMainImgEditDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			visible: false,
 			active: ''
 		};
-	},
+
+		this.showModal = this.showModal.bind(this);
+		this.handleOk = this.handleOk.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+		this.onImageClick = this.onImageClick.bind(this);
+		this.onCheckboxChange = this.onCheckboxChange.bind(this);
+	}
 
 	showModal() {
 		this.setState({
 			active: this.props.model.active,
 			visible: true
 		});
-	},
+	}
 
 	handleOk() {
 		Ajax({
@@ -39,22 +46,22 @@ const AppMainImgEditDialog = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	onImageClick() {
 		this.refs.imgNativeShow.showModal();
-	},
+	}
 
 	onCheckboxChange(key, e) {
 		this.state[key] = e.target.checked ? 1 : 0;
 		this.setState({});
-	},
+	}
 
 	render() {
 		const formItemLayout = {
@@ -93,7 +100,7 @@ const AppMainImgEditDialog = React.createClass({
 				<ImgNativeShow ref="imgNativeShow" title="图片" imgKey={this.props.model.imageKey}/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default AppMainImgEditDialog;

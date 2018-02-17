@@ -6,36 +6,36 @@ const FormItem = Form.Item;
 import Ajax from '../../util/Ajax';
 import CommodityForm from './CommodityForm';
 
-const CommodityDialog = React.createClass({
-	getInitialState() {
-		return {
+class CommodityDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			visible: false,
 			fileKey: '',
 			com: {}
 		};
-	},
-	componentWillMount() {
-	},
 
-	componentWillReceiveProps(nextProps) {
-		//console.log(nextProps.com);
-	},
+		this.showModal = this.showModal.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+		this.isEdit = this.isEdit.bind(this);
+		this.handleOk = this.handleOk.bind(this);
+	}
 
 	showModal() {
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	isEdit() {
 		return this.props.type !== 'new';
-	},
+	}
 
 	handleOk() {
 		this.refs.commodityForm.getForm().validateFields((errors, values) => {
@@ -77,7 +77,7 @@ const CommodityDialog = React.createClass({
 				});
 			}
 		});
-	},
+	}
 
 	render() {
 		let title = this.props.type === 'new' ? '新增商品' : '修改商品信息';
@@ -92,6 +92,6 @@ const CommodityDialog = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
 export default CommodityDialog;

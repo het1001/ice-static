@@ -6,13 +6,16 @@ const FormItem = Form.Item;
 
 import Ajax from '../util/Ajax';
 
-const Login = React.createClass({
-	getInitialState() {
-		return {
+class Login extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			nameError: '',
 			pwdError: ''
 		};
-	},
+
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 
 	handleSubmit(e) {
 		e.preventDefault();
@@ -63,11 +66,11 @@ const Login = React.createClass({
 				},
 			});
 		});
-	},
+	}
 
 	noop() {
 		return false;
-	},
+	}
 
 	render() {
 		const {getFieldDecorator, getFieldError, isFieldValidating} = this.props.form;
@@ -78,7 +81,7 @@ const Login = React.createClass({
 
 		return (
 			<div style={{width: '80%', paddingLeft: '30px', float: 'left'}}>
-				<Form horizontal>
+				<Form>
 					<FormItem
 						wrapperCol={{span: 14, offset: 18}}
 					>
@@ -113,7 +116,7 @@ const Login = React.createClass({
 				</Form>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default createForm()(Login);

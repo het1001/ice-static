@@ -1,13 +1,14 @@
 import React from 'react';
-import {Table, message, Popconfirm, Icon} from 'antd';
+import {Table, message, Popconfirm, Icon, Divider} from 'antd';
 import Ajax from '../../util/Ajax';
 import SearchBar from './SearchBar';
 import CommonUtil from '../../util/CommonUtil';
 import PromotionDialog from './PromotionDialog';
 
-const PromotionList = React.createClass({
-	getInitialState() {
-		return {
+class PromotionList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 			pagination: {
 				current: 1,
@@ -23,7 +24,16 @@ const PromotionList = React.createClass({
 			arithmeticMap: {},
 			comData: [],
 		};
-	},
+
+		this.fetch = this.fetch.bind(this);
+		this.handleTableChange = this.handleTableChange.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
+		this.online = this.online.bind(this);
+		this.offline = this.offline.bind(this);
+		this.edit = this.edit.bind(this);
+		this.delete = this.delete.bind(this);
+	}
+
 	componentWillMount() {
 		this.fetch();
 		Ajax({
@@ -68,7 +78,8 @@ const PromotionList = React.createClass({
 				}
 			},
 		});
-	},
+	}
+
 	fetch() {
 		this.setState({
 			loading: true
@@ -100,7 +111,7 @@ const PromotionList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleTableChange(pagination, filters, sorter) {
 		const pager = this.state.pagination;
@@ -110,7 +121,7 @@ const PromotionList = React.createClass({
 		}, () => {
 			this.fetch();
 		});
-	},
+	}
 
 	handleSearch(search) {
 		if (search) {
@@ -126,7 +137,7 @@ const PromotionList = React.createClass({
 		} else {
 			this.fetch();
 		}
-	},
+	}
 
 	online(record) {
 		const param = {};
@@ -144,7 +155,7 @@ const PromotionList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	offline(record) {
 		const param = {};
@@ -162,7 +173,7 @@ const PromotionList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	edit(record) {
 		this.setState({
@@ -171,7 +182,7 @@ const PromotionList = React.createClass({
 		}, () => {
 			this.refs.promotionDialog.showModal(false);
 		});
-	},
+	}
 
 	delete(record) {
 		const param = {};
@@ -189,7 +200,7 @@ const PromotionList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	render() {
 		const columns = [
@@ -247,9 +258,9 @@ const PromotionList = React.createClass({
 											<a href="#commodity_list">启用</a>
 										</Popconfirm>
 								}
-						<span className="ant-divider"/>
+								<Divider type="vertical" />
 								<a onClick={this.edit.bind(this, record)}>编辑</a>
-								<span className="ant-divider"/>
+								<Divider type="vertical" />
 								<Popconfirm title="确定要删除吗?" onConfirm={this.delete.bind(this, record)}
 														okText="是" cancelText="否">
 									<a>删除</a>
@@ -276,7 +287,7 @@ const PromotionList = React.createClass({
 				/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default PromotionList;

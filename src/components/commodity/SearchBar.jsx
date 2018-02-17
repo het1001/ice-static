@@ -4,21 +4,27 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 import CommodityDialog from './CommodityDialog';
 
-const SearchBar = React.createClass({
-	getInitialState() {
-		return {
+class SearchBar extends React.Component{
+	constructor(props) {
+		super(props);
+		this.state = {
 			status: false,
 		};
-	},
+
+		this.newCom = this.newCom.bind(this);
+		this.handleReset = this.handleReset.bind(this);
+		this.onStatusChange = this.onStatusChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 
 	newCom() {
 		this.refs.commodityDialog.showModal();
-	},
+	}
 
 	handleReset(e) {
 		e.preventDefault();
 		this.props.form.resetFields();
-	},
+	}
 
 	onStatusChange(e) {
 		this.setState({
@@ -26,7 +32,7 @@ const SearchBar = React.createClass({
 		}, () => {
 			this.handleSubmit();
 		});
-	},
+	}
 
 	handleSubmit(e) {
 		e && e.preventDefault();
@@ -36,19 +42,18 @@ const SearchBar = React.createClass({
 				return;
 			}
 
-			values.status = this.state.status ? 1 : '',
-
-				this.props.callback(values);
+			values.status = this.state.status ? 1 : '';
+			this.props.callback(values);
 		});
-	},
+	}
 
 	render() {
 		const {getFieldDecorator} = this.props.form;
 
 		return (
 			<span>
-        <Form horizontal className="ant-advanced-search-form">
-          <Row gutter={16}>
+        <Form className="ant-advanced-search-form">
+          <Row gutter={24}>
             <Col sm={6}>
               <FormItem
 								label="名称"
@@ -66,22 +71,11 @@ const SearchBar = React.createClass({
 								labelCol={{span: 10}}
 								wrapperCol={{span: 14}}
 							>
-                {getFieldDecorator('brand')(
-									<Input placeholder="请输入厂家/品牌" size="default"/>
-								)}
-              </FormItem>
-            </Col>
-						<Col sm={6}>
-              <FormItem
-								label="分类"
-								labelCol={{span: 10}}
-								wrapperCol={{span: 14}}
-							>
-                {getFieldDecorator('catId')(
-									<Select placeholder="请选择所属类型">
+								{getFieldDecorator('brandId')(
+									<Select placeholder="请选择品牌">
 										<Option value={0}>无</Option>
 										{
-											this.props.catData.map(item => {
+											this.props.brandData.map(item => {
 												return <Option value={item.id}>{item.name}</Option>
 											})
 										}
@@ -98,12 +92,52 @@ const SearchBar = React.createClass({
                 <Checkbox onChange={this.onStatusChange} checked={this.state.status}>上线的</Checkbox>
               </FormItem>
             </Col>
+						<Col sm={6}>
+            </Col>
+          </Row>
+					<Row>
+            <Col sm={6}>
+              <FormItem
+								label="价格分类"
+								labelCol={{span: 10}}
+								wrapperCol={{span: 14}}
+							>
+                {getFieldDecorator('pricCatId')(
+									<Select placeholder="请选择价格类型">
+										<Option value={0}>无</Option>
+										{
+											this.props.pricCatData.map(item => {
+												return <Option value={item.id}>{item.name}</Option>
+											})
+										}
+									</Select>
+								)}
+              </FormItem>
+            </Col>
+						<Col sm={6}>
+              <FormItem
+								label="包装分类"
+								labelCol={{span: 10}}
+								wrapperCol={{span: 14}}
+							>
+                {getFieldDecorator('packCatId')(
+									<Select placeholder="请选择所属包装类型">
+										<Option value={0}>无</Option>
+										{
+											this.props.packCatData.map(item => {
+												return <Option value={item.id}>{item.name}</Option>
+											})
+										}
+									</Select>
+								)}
+              </FormItem>
+            </Col>
           </Row>
           <Row>
             <Col span={2} offset={1} style={{textAlign: 'right'}}>
               <Button type="primary" style={{marginRight: '30px'}} onClick={this.newCom}>新增商品</Button>
             </Col>
-            <Col span={10} offset={3} style={{textAlign: 'right'}}>
+            <Col span={15} offset={3} style={{textAlign: 'right'}}>
               <Button type="primary" style={{marginRight: '30px'}} htmlType="submit"
 											onClick={this.handleSubmit}>搜索</Button>
               <Button onClick={this.handleReset}>重置</Button>
@@ -113,7 +147,7 @@ const SearchBar = React.createClass({
         <CommodityDialog ref="commodityDialog" type="new" com={{}} callback={this.props.callback}/>
       </span>
 		);
-	},
-});
+	}
+};
 
 export default Form.create()(SearchBar);

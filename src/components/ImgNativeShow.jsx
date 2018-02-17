@@ -2,22 +2,28 @@ import React from 'react';
 
 import {Modal} from 'antd';
 
-const ImgNativeShow = React.createClass({
-	getInitialState() {
-		return {
+class ImgNativeShow extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			visible: false,
 			width: 300,
 		};
-	},
+
+		this.resetWidth = this.resetWidth.bind(this);
+		this.showModal = this.showModal.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+	}
+
 	componentWillMount() {
 		this.resetWidth();
-	},
+	}
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.imgKey !== nextProps.imgKey) {
 			this.resetWidth(nextProps.imgKey);
 		}
-	},
+	}
 
 	resetWidth(imgKey) {
 		let imgKeyR = imgKey ? imgKey : this.props.imgKey;
@@ -36,19 +42,19 @@ const ImgNativeShow = React.createClass({
 				};
 			}
 		}
-	},
+	}
 
 	showModal() {
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	render() {
 		return (
@@ -63,7 +69,7 @@ const ImgNativeShow = React.createClass({
 				</Modal>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default ImgNativeShow;

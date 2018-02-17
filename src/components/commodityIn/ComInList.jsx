@@ -1,13 +1,14 @@
 import React from 'react';
-import {Table, Icon, Button} from 'antd';
+import {Table, Divider, Button} from 'antd';
 import Ajax from '../../util/Ajax';
 import CommonUtil from '../../util/CommonUtil';
 import SearchBar from './SearchBar';
 import ComInDialogView from './ComInDialogView';
 
-const ComInList = React.createClass({
-	getInitialState() {
-		return {
+class ComInList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 			pagination: {
 				current: 1,
@@ -18,10 +19,17 @@ const ComInList = React.createClass({
 			loading: true,
 			inId: 0,
 		};
-	},
+
+		this.fetch = this.fetch.bind(this);
+		this.handleTableChange = this.handleTableChange.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
+		this.view = this.view.bind(this);
+	}
+
 	componentWillMount() {
 		this.fetch();
-	},
+	}
+
 	fetch() {
 		this.setState({
 			loading: true
@@ -52,7 +60,7 @@ const ComInList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleTableChange(pagination, filters, sorter) {
 		const pager = this.state.pagination;
@@ -62,7 +70,7 @@ const ComInList = React.createClass({
 		}, () => {
 			this.fetch();
 		});
-	},
+	}
 
 	handleSearch(search) {
 		if (search) {
@@ -77,7 +85,7 @@ const ComInList = React.createClass({
 		} else {
 			this.fetch();
 		}
-	},
+	}
 
 	view(record) {
 		this.setState({
@@ -85,7 +93,7 @@ const ComInList = React.createClass({
 		}, () => {
 			this.refs.comInView.showModal();
 		});
-	},
+	}
 
 	render() {
 		const columns = [
@@ -112,7 +120,7 @@ const ComInList = React.createClass({
 				render: (text, record) => (
 					<span>
             <a href="#commodityIn_list" onClick={this.view.bind(this, record)}>查看</a>
-            <span className="ant-divider"/>
+            <Divider type="vertical" />
             <a href="#commodityIn_list">其他</a>
           </span>
 				),
@@ -131,7 +139,7 @@ const ComInList = React.createClass({
 				<ComInDialogView ref="comInView" inId={this.state.inId}/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default ComInList;

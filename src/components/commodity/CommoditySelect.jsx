@@ -4,12 +4,16 @@ import {Select} from 'antd';
 const Option = Select.Option;
 import Ajax from '../../util/Ajax';
 
-const CommoditySelect = React.createClass({
-	getInitialState() {
-		return {
+class CommoditySelect extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 		};
-	},
+
+		this.handleChange = this.handleChange.bind(this);
+	}
+
 	componentWillMount() {
 		Ajax({
 			url: '/ice/pc/commodity/queryAll.json',
@@ -26,11 +30,11 @@ const CommoditySelect = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleChange() {
 
-	},
+	}
 
 	render() {
 		return (
@@ -47,7 +51,7 @@ const CommoditySelect = React.createClass({
 				</Select>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default CommoditySelect;

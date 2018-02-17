@@ -4,29 +4,21 @@ import {Form, Input, Row, Col, Select, Button, DatePicker, Checkbox} from 'antd'
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-const SearchBar = React.createClass({
-	getInitialState() {
-		return {
+class SearchBar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			status: false,
 		};
-	},
+
+		this.handleReset = this.handleReset.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 
 	handleReset(e) {
 		e.preventDefault();
 		this.props.form.resetFields();
-	},
-
-	onStatusChange(e) {
-		this.setState({
-			status: e.target.checked
-		}, () => {
-			this.handleSubmit();
-		});
-	},
-
-	handleStateChange(e) {
-		console.log(e);
-	},
+	}
 
 	handleSubmit(e) {
 		e && e.preventDefault();
@@ -38,14 +30,14 @@ const SearchBar = React.createClass({
 
 			this.props.callback(values);
 		});
-	},
+	}
 
 	render() {
 		const {getFieldDecorator} = this.props.form;
 
 		return (
 			<span>
-        <Form horizontal className="ant-advanced-search-form">
+        <Form className="ant-advanced-search-form">
           <Row gutter={16}>
             <Col sm={8}>
               <FormItem
@@ -86,7 +78,7 @@ const SearchBar = React.createClass({
         </Form>
       </span>
 		);
-	},
-});
+	}
+};
 
 export default Form.create()(SearchBar);

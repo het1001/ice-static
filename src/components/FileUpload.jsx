@@ -5,21 +5,25 @@ const Dragger = Upload.Dragger;
 
 import Ajax from '../util/Ajax';
 
-const FileUpload = React.createClass({
-	getInitialState() {
-		return {
+class FileUpload extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			fileKey: '',
 		};
-	},
+
+		this.reloadFile = this.reloadFile.bind(this);
+	}
+
 	componentWillMount() {
 		this.reloadFile(this.props);
-	},
+	}
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.value !== nextProps.value || this.props.commodity.id !== nextProps.commodity.id) {
 			this.reloadFile(nextProps);
 		}
-	},
+	}
 
 	reloadFile(props) {
 		if (props.value && props.value !== this.state.fileKey) {
@@ -51,7 +55,7 @@ const FileUpload = React.createClass({
 				},
 			});
 		}
-	},
+	}
 
 	render() {
 		const props = {
@@ -97,7 +101,7 @@ const FileUpload = React.createClass({
 				</Dragger>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default FileUpload;

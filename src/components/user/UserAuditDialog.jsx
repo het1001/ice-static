@@ -9,9 +9,10 @@ import CommonUtil from '../../util/CommonUtil';
 import ImgNativeShow from '../ImgNativeShow';
 import NoAccessModel from './NoAccessModel';
 
-const UserAuditDialog = React.createClass({
-	getInitialState() {
-		return {
+class UserAuditDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			visible: false,
 			popoverVisible: false,
 			phone: '',
@@ -25,7 +26,15 @@ const UserAuditDialog = React.createClass({
 			standbyPhone: '',
 			memo: '',
 		};
-	},
+
+		this.showModal = this.showModal.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+		this.handleAccess = this.handleAccess.bind(this);
+		this.handleNoAccess = this.handleNoAccess.bind(this);
+		this.handlefreeae = this.handlefreeae.bind(this);
+		this.handleVisibleChange = this.handleVisibleChange.bind(this);
+		this.showNativeImg = this.showNativeImg.bind(this);
+	}
 
 	showModal() {
 		Ajax({
@@ -53,13 +62,13 @@ const UserAuditDialog = React.createClass({
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	handleAccess() {
 		Ajax({
@@ -79,7 +88,7 @@ const UserAuditDialog = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleNoAccess() {
 		if (!this.state.memo) {
@@ -107,7 +116,7 @@ const UserAuditDialog = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handlefreeae() {
 		Ajax({
@@ -126,15 +135,15 @@ const UserAuditDialog = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleVisibleChange(popoverVisible) {
 		this.setState({popoverVisible});
-	},
+	}
 
 	showNativeImg() {
 		this.refs.imgNativeShow.showModal();
-	},
+	}
 
 	render() {
 		const formItemLayout = {
@@ -158,7 +167,7 @@ const UserAuditDialog = React.createClass({
 								 <Button key="audit_access" type="primary" size="large" onClick={this.handleAccess}>通过</Button>,
 								 <Popover
 									 content={<span>
-                                   意见<Input type="textarea" onChange={(e) => {
+                                   意见<Input.TextArea onChange={(e) => {
 										 this.setState({
 											 memo: e.target.value
 										 });
@@ -237,7 +246,7 @@ const UserAuditDialog = React.createClass({
 				<NoAccessModel phone={this.state.phone}/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default UserAuditDialog;

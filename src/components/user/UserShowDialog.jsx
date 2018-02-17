@@ -7,9 +7,10 @@ import Ajax from '../../util/Ajax';
 
 import ImgNativeShow from '../ImgNativeShow';
 
-const UserShowDialog = React.createClass({
-	getInitialState() {
-		return {
+class UserShowDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			visible: false,
 			shopName: '',
 			shopAddress: '',
@@ -20,7 +21,11 @@ const UserShowDialog = React.createClass({
 			isAccess: 1,
 			auditMemo: ''
 		};
-	},
+
+		this.showModal = this.showModal.bind(this);
+		this.showNativeImg = this.showNativeImg.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+	}
 
 	showModal() {
 		Ajax({
@@ -48,17 +53,17 @@ const UserShowDialog = React.createClass({
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	showNativeImg() {
 		this.refs.imgNativeShow.showModal();
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	render() {
 		const formItemLayout = {
@@ -142,6 +147,6 @@ const UserShowDialog = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
 export default UserShowDialog;

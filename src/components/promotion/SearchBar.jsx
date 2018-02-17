@@ -6,12 +6,18 @@ const Option = Select.Option;
 
 import PromotionDialog from './PromotionDialog';
 
-const SearchBar = React.createClass({
-	getInitialState() {
-		return {
+class SearchBar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			isCurrent: false,
 		};
-	},
+
+		this.handleReset = this.handleReset.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.onStatusChange = this.onStatusChange.bind(this);
+		this.add = this.add.bind(this);
+	}
 
 	handleReset(e) {
 		e.preventDefault();
@@ -19,7 +25,7 @@ const SearchBar = React.createClass({
 			isCurrent: false,
 		});
 		this.props.form.resetFields();
-	},
+	}
 
 	handleSubmit(e) {
 		e && e.preventDefault();
@@ -32,7 +38,7 @@ const SearchBar = React.createClass({
 			values.isCurrent = this.state.isCurrent;
 			this.props.callback(values);
 		});
-	},
+	}
 
 	onStatusChange(e) {
 		this.setState({
@@ -40,18 +46,18 @@ const SearchBar = React.createClass({
 		}, () => {
 			this.handleSubmit();
 		});
-	},
+	}
 
 	add() {
 		this.refs.promotionDialog.showModal(true);
-	},
+	}
 
 	render() {
 		const {getFieldDecorator} = this.props.form;
 
 		return (
 			<span>
-        <Form horizontal className="ant-advanced-search-form">
+        <Form className="ant-advanced-search-form">
           <Row gutter={16}>
             <Col sm={8}>
               <FormItem
@@ -122,7 +128,7 @@ const SearchBar = React.createClass({
 												 ref="promotionDialog" callback={this.props.callback}/>
       </span>
 		);
-	},
-});
+	}
+};
 
 export default Form.create()(SearchBar);

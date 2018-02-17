@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, message, Popconfirm} from 'antd';
+import {Table, message, Popconfirm, Divider} from 'antd';
 import Ajax from '../../util/Ajax';
 import SearchBar from './SearchBar';
 import CommonUtil from '../../util/CommonUtil';
@@ -7,9 +7,10 @@ import CommonUtil from '../../util/CommonUtil';
 import UserShowDialog from './UserShowDialog';
 import UserAuditDialog from './UserAuditDialog';
 
-const UserList = React.createClass({
-	getInitialState() {
-		return {
+class UserList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 			pagination: {
 				current: 1,
@@ -21,10 +22,20 @@ const UserList = React.createClass({
 			loading: true,
 			user: {}
 		};
-	},
+
+		this.fetch = this.fetch.bind(this);
+		this.handleTableChange = this.handleTableChange.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
+		this.show = this.show.bind(this);
+		this.showAudit = this.showAudit.bind(this);
+		this.freeae = this.freeae.bind(this);
+		this.unFreeae = this.unFreeae.bind(this);
+	}
+
 	componentWillMount() {
 		this.fetch();
-	},
+	}
+
 	fetch() {
 		this.setState({
 			loading: true
@@ -56,7 +67,7 @@ const UserList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleTableChange(pagination, filters, sorter) {
 		const pager = this.state.pagination;
@@ -66,7 +77,7 @@ const UserList = React.createClass({
 		}, () => {
 			this.fetch();
 		});
-	},
+	}
 
 	handleSearch(search) {
 		if (search) {
@@ -82,7 +93,7 @@ const UserList = React.createClass({
 		} else {
 			this.fetch();
 		}
-	},
+	}
 
 	show(record) {
 		this.setState({
@@ -90,7 +101,7 @@ const UserList = React.createClass({
 		}, () => {
 			this.refs.userShowDialog.showModal();
 		});
-	},
+	}
 
 	showAudit(record) {
 		this.setState({
@@ -98,7 +109,7 @@ const UserList = React.createClass({
 		}, () => {
 			this.refs.userAuditDialog.showModal();
 		});
-	},
+	}
 
 	freeae(record) {
 		Ajax({
@@ -116,7 +127,7 @@ const UserList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	unFreeae(record) {
 		Ajax({
@@ -134,7 +145,7 @@ const UserList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	render() {
 		const columns = [
@@ -210,7 +221,7 @@ const UserList = React.createClass({
 						switch (record.state) {
 							case 'AUDITING':
 								action.push(<a onClick={this.showAudit.bind(this, record)}>审核</a>);
-								action.push(<span className="ant-divider"/>);
+								action.push(<Divider type="vertical" />);
 								action.push(<Popconfirm title="确定要冻结该用户吗?" onConfirm={this.freeae.bind(this, record)}
 																				okText="是" cancelText="否">
 									<a>冻结</a>
@@ -221,7 +232,7 @@ const UserList = React.createClass({
 								break;
 							case 'NORMAL':
 								action.push(<a onClick={this.show.bind(this, record)}>查看</a>);
-								action.push(<span className="ant-divider"/>);
+								action.push(<Divider type="vertical" />);
 								action.push(<Popconfirm title="确定要冻结该用户吗?" onConfirm={this.freeae.bind(this, record)}
 																				okText="是" cancelText="否">
 									<a>冻结</a>
@@ -229,7 +240,7 @@ const UserList = React.createClass({
 								break;
 							case 'FREEAE':
 								action.push(<a onClick={this.show.bind(this, record)}>查看</a>);
-								action.push(<span className="ant-divider"/>);
+								action.push(<Divider type="vertical" />);
 								action.push(<Popconfirm title="确定要解冻该用户吗?" onConfirm={this.unFreeae.bind(this, record)}
 																				okText="是" cancelText="否">
 									<a>解冻</a>
@@ -259,7 +270,7 @@ const UserList = React.createClass({
 				<UserAuditDialog ref="userAuditDialog" user={this.state.user} callback={this.fetch}/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default UserList;

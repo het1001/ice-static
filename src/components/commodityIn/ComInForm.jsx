@@ -7,9 +7,10 @@ import Ajax from '../../util/Ajax';
 import styles from './ComInForm.less';
 
 let uuid = 1;
-const ComInForm = React.createClass({
-	getInitialState() {
-		return {
+class ComInForm extends React.Component{
+	constructor(props) {
+		super(props);
+		this.state = {
 			comData: [],
 			comDataMap: {},
 			comInArray: [{
@@ -22,7 +23,15 @@ const ComInForm = React.createClass({
 				total: 0,
 			}],
 		};
-	},
+
+		this.setValue = this.setValue.bind(this);
+		this.getValues = this.getValues.bind(this);
+		this.remove = this.remove.bind(this);
+		this.add = this.add.bind(this);
+		this.handleComChange = this.handleComChange.bind(this);
+		this.handleNumChange = this.handleNumChange.bind(this);
+	}
+
 	componentWillMount() {
 		Ajax({
 			url: '/ice/pc/commodity/queryAll.json',
@@ -49,7 +58,7 @@ const ComInForm = React.createClass({
 		});
 
 		this.setValue(this.state.comInArray);
-	},
+	}
 
 	setValue(comInArray) {
 		for (const i in comInArray) {
@@ -60,11 +69,11 @@ const ComInForm = React.createClass({
 		this.setState({
 			comInArray
 		});
-	},
+	}
 
 	getValues() {
 		return this.state.comInArray;
-	},
+	}
 
 	remove(k) {
 		const comInArray = this.state.comInArray;
@@ -73,7 +82,7 @@ const ComInForm = React.createClass({
 		}
 
 		this.setValue(comInArray.filter(key => key.key !== k));
-	},
+	}
 
 	add() {
 		uuid++;
@@ -89,7 +98,7 @@ const ComInForm = React.createClass({
 			total: 0,
 		});
 		this.setValue(comInArray);
-	},
+	}
 
 	handleComChange(k, value) {
 		const com = this.state.comDataMap[value];
@@ -104,7 +113,7 @@ const ComInForm = React.createClass({
 		}
 
 		this.setValue(comInArray);
-	},
+	}
 
 	handleNumChange(name, k, value) {
 		const comInArray = this.state.comInArray;
@@ -125,7 +134,7 @@ const ComInForm = React.createClass({
 		}
 
 		this.setValue(comInArray);
-	},
+	}
 
 	render() {
 		const formItemLayoutWithOutLabel = {
@@ -211,7 +220,7 @@ const ComInForm = React.createClass({
 		});
 
 		return (
-			<Form horizontal>
+			<Form>
 				{formItems}
 				<FormItem {...formItemLayoutWithOutLabel}>
 					<Button type="dashed" onClick={this.add} style={{width: '60%'}}>
@@ -220,7 +229,7 @@ const ComInForm = React.createClass({
 				</FormItem>
 			</Form>
 		);
-	},
-});
+	}
+};
 
 export default ComInForm;

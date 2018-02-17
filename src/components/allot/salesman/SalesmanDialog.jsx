@@ -6,9 +6,10 @@ const Option = Select.Option;
 
 import Ajax from '../../../util/Ajax';
 
-const SalesmanDialog = React.createClass({
-	getInitialState() {
-		return {
+class SalesmanDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			visible: false,
 			id: 0,
 			name: '',
@@ -16,9 +17,13 @@ const SalesmanDialog = React.createClass({
 			phone: '',
 			type: 'DELIVERYMEN'
 		};
-	},
-	componentWillMount() {
-	},
+
+		this.showModal = this.showModal.bind(this);
+		this.handleOk = this.handleOk.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+		this.onInputChange = this.onInputChange.bind(this);
+		this.handleSelectChange = this.handleSelectChange.bind(this);
+	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.isEdit) {
@@ -30,8 +35,7 @@ const SalesmanDialog = React.createClass({
 				type: nextProps.obj.salesmanTypeEnum
 			});
 		}
-
-	},
+	}
 
 	showModal(isAdd) {
 		if (isAdd) {
@@ -47,7 +51,7 @@ const SalesmanDialog = React.createClass({
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	handleOk() {
 		if (!this.state.name) {
@@ -105,23 +109,23 @@ const SalesmanDialog = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	onInputChange(key, e) {
 		this.state[key] = e.target.value;
 		this.setState({});
-	},
+	}
 
 	handleSelectChange(key, e) {
 		this.state[key] = e;
 		this.setState({});
-	},
+	}
 
 	render() {
 		const formItemLayout = {
@@ -189,7 +193,7 @@ const SalesmanDialog = React.createClass({
 				</Modal>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default SalesmanDialog;

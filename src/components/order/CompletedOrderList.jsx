@@ -3,9 +3,10 @@ import {Tag, Table, message} from 'antd';
 import Ajax from '../../util/Ajax';
 import CommonUtil from '../../util/CommonUtil';
 
-const NewOrderList = React.createClass({
-	getInitialState() {
-		return {
+class NewOrderList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 			pagination: {
 				current: 1,
@@ -15,10 +16,16 @@ const NewOrderList = React.createClass({
 			state: '',
 			loading: true
 		};
-	},
+
+		this.fetch = this.fetch.bind(this);
+		this.handleTableChange = this.handleTableChange.bind(this);
+		this.onView = this.onView.bind(this);
+	}
+
 	componentWillMount() {
 		this.fetch();
-	},
+	}
+
 	fetch() {
 		this.setState({
 			loading: true
@@ -48,7 +55,7 @@ const NewOrderList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleTableChange(pagination, filters, sorter) {
 		const pager = this.state.pagination;
@@ -58,11 +65,11 @@ const NewOrderList = React.createClass({
 		}, () => {
 			this.fetch();
 		});
-	},
+	}
 
 	onView(record) {
 
-	},
+	}
 
 	render() {
 		const expandedRowRender = (data) => {
@@ -110,6 +117,9 @@ const NewOrderList = React.createClass({
           </span>
 				),
 			}, {
+				title: '用时',
+				dataIndex: 'time',
+			}, {
 				title: '总价（元）',
 				dataIndex: 'priceTotal',
 			}, {
@@ -147,7 +157,7 @@ const NewOrderList = React.createClass({
 					bordered/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default NewOrderList;

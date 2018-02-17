@@ -13,9 +13,10 @@ const dateFormat = 'YYYY-MM-DD';
 import Ajax from '../../util/Ajax';
 import CommonUtil from '../../util/CommonUtil';
 
-const PromotionDialog = React.createClass({
-	getInitialState() {
-		return {
+class PromotionDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			visible: false,
 			id: 0,
 			comId: '',
@@ -25,9 +26,17 @@ const PromotionDialog = React.createClass({
 			effectiveDate: '',
 			deadline: ''
 		};
-	},
+
+		this.showModal = this.showModal.bind(this);
+		this.onInputChange = this.onInputChange.bind(this);
+		this.onArithChange = this.onArithChange.bind(this);
+		this.handleSelectChange = this.handleSelectChange.bind(this);
+		this.onDateChange = this.onDateChange.bind(this);
+		this.onParamChange = this.onParamChange.bind(this);
+	}
+
 	componentWillMount() {
-	},
+	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.isEdit) {
@@ -42,7 +51,7 @@ const PromotionDialog = React.createClass({
 				funcKeys: JSON.parse(nextProps.arithmeticMap[nextProps.obj.arithId].funcKeys),
 			});
 		}
-	},
+	}
 
 	showModal(isAdd) {
 		if (!isAdd) {
@@ -63,7 +72,7 @@ const PromotionDialog = React.createClass({
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	handleOk() {
 		if (!this.state.comId) {
@@ -126,18 +135,18 @@ const PromotionDialog = React.createClass({
 				},
 			});
 		}
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	onInputChange(key, e) {
 		this.state[key] = e.target.value;
 		this.setState({});
-	},
+	}
 
 	onArithChange(arithId) {
 		this.setState({
@@ -145,24 +154,24 @@ const PromotionDialog = React.createClass({
 			arithId,
 			params: {},
 		});
-	},
+	}
 
 	handleSelectChange(key, e) {
 		this.state[key] = e;
 		this.setState({});
-	},
+	}
 
 	onDateChange(date, dateString) {
 		this.setState({
 			effectiveDate: dateString[0],
 			deadline: dateString[1]
 		});
-	},
+	}
 
 	onParamChange(key, value) {
 		this.state.params[key] = value;
 		this.setState({});
-	},
+	}
 
 	render() {
 		const formItemLayout = {
@@ -180,7 +189,7 @@ const PromotionDialog = React.createClass({
 			<div>
 				<Modal title="新增" visible={this.state.visible} width="700px"
 							 maskClosable={false}
-							 onOk={this.handleOk} onCancel={this.handleCancel}
+							 onOk={this.handleOk.bind(this)} onCancel={this.handleCancel.bind(this)}
 				>
 					<Form>
 						<FormItem
@@ -230,10 +239,10 @@ const PromotionDialog = React.createClass({
 							>
 								{
 									(() => {
-										switch(item.type) {
+										switch (item.type) {
 											case 'inputNum':
 												return <InputNumber style={{width: '50%'}} value={this.state.params[item.key]}
-																		 onChange={this.onParamChange.bind(this, item.key)}/>
+																						onChange={this.onParamChange.bind(this, item.key)}/>
 											case 'commodity':
 												return <Select
 													showSearch
@@ -275,7 +284,7 @@ const PromotionDialog = React.createClass({
 				</Modal>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default PromotionDialog;

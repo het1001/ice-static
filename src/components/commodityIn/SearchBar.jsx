@@ -5,19 +5,24 @@ const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 import ComInDialog from './ComInDialog';
 
-const SearchBar = React.createClass({
-	getInitialState() {
-		return {};
-	},
+class SearchBar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
+
+		this.newComIn = this.newComIn.bind(this);
+		this.handleReset = this.handleReset.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 
 	newComIn() {
 		this.refs.comInDialog.showModal();
-	},
+	}
 
 	handleReset(e) {
 		e.preventDefault();
 		this.props.form.resetFields();
-	},
+	}
 
 	handleSubmit(e) {
 		e.preventDefault();
@@ -34,14 +39,14 @@ const SearchBar = React.createClass({
 
 			this.props.callback(values);
 		});
-	},
+	}
 
 	render() {
 		const {getFieldDecorator} = this.props.form;
 
 		return (
 			<span>
-        <Form horizontal className="ant-advanced-search-form">
+        <Form className="ant-advanced-search-form">
           <Row gutter={16}>
             <Col sm={10}>
               <FormItem
@@ -69,7 +74,7 @@ const SearchBar = React.createClass({
         <ComInDialog ref="comInDialog" type="new" com={{}} callback={this.props.callback}/>
       </span>
 		);
-	},
-});
+	}
+};
 
 export default Form.create()(SearchBar);

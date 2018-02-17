@@ -3,25 +3,27 @@ import {Modal, Select, message} from 'antd';
 import Ajax from '../../util/Ajax';
 import ComInForm from './ComInForm';
 
-const ComInDialog = React.createClass({
-	getInitialState() {
-		return {};
-	},
-	componentWillMount() {
+class ComInDialog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
 
-	},
+		this.showModal = this.showModal.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+		this.handleOk = this.handleOk.bind(this);
+	}
 
 	showModal() {
 		this.setState({
 			visible: true
 		});
-	},
+	}
 
 	handleCancel() {
 		this.setState({
 			visible: false
 		});
-	},
+	}
 
 	handleOk() {
 		const comIns = this.refs.comIn.getValues();
@@ -56,7 +58,7 @@ const ComInDialog = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	render() {
 		return (
@@ -68,7 +70,7 @@ const ComInDialog = React.createClass({
 				</Modal>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default ComInDialog;

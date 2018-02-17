@@ -1,13 +1,14 @@
 import React from 'react';
-import {Table, message, Popconfirm} from 'antd';
+import {Table, message, Popconfirm, Divider} from 'antd';
 import Ajax from '../../../util/Ajax';
 import SearchBar from './SearchBar';
 
 import DistrictDialog from './DistrictDialog';
 
-const DistrictList = React.createClass({
-	getInitialState() {
-		return {
+class DistrictList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 			pagination: {
 				current: 1,
@@ -20,7 +21,14 @@ const DistrictList = React.createClass({
 			deliveryMens: [],
 			salesmans: [],
 		};
-	},
+
+		this.fetch = this.fetch.bind(this);
+		this.handleTableChange = this.handleTableChange.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
+		this.edit = this.edit.bind(this);
+		this.delete = this.delete.bind(this);
+	}
+
 	componentWillMount() {
 		this.fetch();
 		Ajax({
@@ -37,7 +45,8 @@ const DistrictList = React.createClass({
 				}
 			},
 		});
-	},
+	}
+
 	fetch() {
 		this.setState({
 			loading: true
@@ -67,7 +76,7 @@ const DistrictList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleTableChange(pagination, filters, sorter) {
 		const pager = this.state.pagination;
@@ -77,7 +86,7 @@ const DistrictList = React.createClass({
 		}, () => {
 			this.fetch();
 		});
-	},
+	}
 
 	handleSearch(search) {
 		if (search) {
@@ -91,7 +100,7 @@ const DistrictList = React.createClass({
 		} else {
 			this.fetch();
 		}
-	},
+	}
 
 	edit(record) {
 		this.setState({
@@ -100,7 +109,7 @@ const DistrictList = React.createClass({
 		}, () => {
 			this.refs.districtDialog.showModal(false);
 		});
-	},
+	}
 
 	delete(record) {
 		Ajax({
@@ -116,7 +125,7 @@ const DistrictList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	render() {
 		const columns = [
@@ -133,7 +142,7 @@ const DistrictList = React.createClass({
 				render: (text, record) => (
 					<span>
                       <a onClick={this.edit.bind(this, record)}>编辑</a>
-                      <span className="ant-divider"/>
+                      <Divider type="vertical" />
                       <Popconfirm title="确定要删除吗?" onConfirm={this.delete.bind(this, record)}
 																	okText="是" cancelText="否">
                         <a>删除</a>
@@ -165,7 +174,7 @@ const DistrictList = React.createClass({
 					callback={this.fetch}/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default DistrictList;

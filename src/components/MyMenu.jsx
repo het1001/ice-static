@@ -4,7 +4,9 @@ import {Menu, Icon} from 'antd';
 const SubMenu = Menu.SubMenu;
 
 const subMenus = {
-	cat_list: ['sub1'],
+	brand_cat: ['sub1'],
+	price_cat: ['sub1'],
+	pack_cat: ['sub1'],
 	commodity_list: ['sub1'],
 	promotion_list: ['sub1'],
 	commodityIn_list: ['sub1'],
@@ -20,37 +22,45 @@ const subMenus = {
 	main_img_set: ['sub4'],
 }
 
-const MyMenu = React.createClass({
-	getInitialState() {
-		return {
+class MyMenu extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			current: this.props.currentMenu,
 		};
-	},
+
+		this.handleClick = this.handleClick.bind(this);
+	}
+
 	handleClick(e) {
 		this.setState({
 			current: e.key,
 		});
 		window.location.hash = e.key;
 		this.props.callback(e.key);
-	},
+	}
+
 	render() {
 		return (
 			<Menu
+				theme="dark"
 				onClick={this.handleClick}
-				style={{width: 240, float: 'left'}}
+				style={{width: '11%', float: 'left'}}
 				defaultOpenKeys={subMenus[this.state.current]}
 				selectedKeys={this.state.current}
 				mode="inline"
 			>
 				<SubMenu key="sub1" title={<span><Icon type="appstore-o"/><span>商品管理</span></span>}>
-					<Menu.Item key="cat_list"><Icon type="bars"/>类型管理</Menu.Item>
+					<Menu.Item key="brand_cat"><Icon type="bars"/>品牌管理</Menu.Item>
+					<Menu.Item key="price_cat"><Icon type="bars"/>价格类型管理</Menu.Item>
+					<Menu.Item key="pack_cat"><Icon type="bars"/>包装类型管理</Menu.Item>
 					<Menu.Item key="commodity_list"><Icon type="bars"/>商品管理</Menu.Item>
 					<Menu.Item key="promotion_list"><Icon type="calculator"/>促销管理</Menu.Item>
 					<Menu.Item key="commodityIn_list"><Icon type="scan"/>入库管理</Menu.Item>
 				</SubMenu>
 				<SubMenu key="sub2" title={<span><Icon type="appstore"/><span>订单管理</span></span>}>
 					<Menu.Item key="new_order"><Icon type="file-unknown"/>新订单</Menu.Item>
-					<Menu.Item key="verify_order"><Icon type="file-unknown"/>确认的订单</Menu.Item>
+					{/*<Menu.Item key="verify_order"><Icon type="file-unknown"/>确认的订单</Menu.Item>*/}
 					<Menu.Item key="cancel_order"><Icon type="file-unknown"/>取消的订单</Menu.Item>
 					<Menu.Item key="complete_order"><Icon type="file-unknown"/>完成的订单</Menu.Item>
 					<Menu.Item key="all_order"><Icon type="file"/>全部订单</Menu.Item>
@@ -68,7 +78,7 @@ const MyMenu = React.createClass({
 				</SubMenu>
 			</Menu>
 		);
-	},
-});
+	}
+};
 
 export default MyMenu;

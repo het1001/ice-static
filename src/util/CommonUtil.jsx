@@ -31,7 +31,17 @@ const CommonUtil = {
 
 	pareDate2: (time) => {
 		return new Date(time).Format('yyyy-MM-dd');
-	}
+	},
+
+	onInputChange(key, e) {
+		this.state[key] = e.target.value;
+		this.setState({});
+	},
+
+	onSelectChange(key, e) {
+		this.state[key] = e;
+		this.setState({});
+	},
 }
 
 export default CommonUtil;

@@ -1,32 +1,32 @@
 import React from 'react';
-import {Table, message, Popconfirm, Button} from 'antd';
+import {Table, message, Popconfirm, Button, Divider} from 'antd';
 import Ajax from '../../util/Ajax';
 import CommonUtil from '../../util/CommonUtil';
 import CatDialog from './CatDialog';
 
-const CatList = React.createClass({
-	getInitialState() {
-		return {
-			data: [],
-			pagination: {
-				current: 1,
-				total: 0,
-			},
-			isEdit: false,
-			loading: true,
-			obj: {},
-		};
-	},
+class CatList extends React.Component {
+	state = {
+		data: [],
+		pagination: {
+			current: 1,
+			total: 0,
+		},
+		isEdit: false,
+		loading: true,
+		obj: {},
+	}
+
 	componentWillMount() {
 		this.fetch();
-	},
-	fetch() {
+	}
+
+	fetch = () => {
 		this.setState({
 			loading: true
 		});
 
 		Ajax({
-			url: '/ice/pc/cat/queryList.json',
+			url: '/ice/pc/cat/queryPackageList.json',
 			param: {},
 			callback: (result) => {
 				if (result.success) {
@@ -42,32 +42,42 @@ const CatList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
-	handleSearch() {
-		this.fetch();
-	},
-
-	newCat() {
+	newCat = () => {
 		this.setState({
 			isEdit: false,
 		}, () => {
 			this.refs.catDialog.showModal(true);
 		});
-	},
+	}
 
-	edit(record) {
+	edit = (record) => {
 		this.setState({
 			obj: record,
 			isEdit: true,
 		}, () => {
 			this.refs.catDialog.showModal(false);
 		});
-	},
+	}
 
-	delete(record) {
-
-	},
+	delete = (record) => {
+		Ajax({
+			url: '/ice/pc/cat/delete.json',
+			method: 'post',
+			param: {
+				id: record.id
+			},
+			callback: (result) => {
+				if (result.success) {
+					message.success('删除成功');
+					this.fetch();
+				} else {
+					message.error('删除失败：' + result.errorMsg);
+				}
+			}
+		});
+	}
 
 	render() {
 		const columns = [
@@ -87,8 +97,8 @@ const CatList = React.createClass({
 				render: (text, record) => (
 					<span>
 						<a onClick={this.edit.bind(this, record)}>编辑</a>
-						<span className="ant-divider"/>
-						<Popconfirm title="确定要删除吗? 删除掉的话所关联的商品类型会置为‘其他’类型" onConfirm={this.delete.bind(this, record)}
+						<Divider type="vertical" />
+						<Popconfirm title="确定要删除吗? " onConfirm={this.delete.bind(this, record)}
 												okText="是" cancelText="否">
 							<a>删除</a>
 						</Popconfirm>
@@ -108,11 +118,11 @@ const CatList = React.createClass({
 					bordered
 				/>
 				<CatDialog
-					ref="catDialog" obj={this.state.obj} isEdit={this.state.isEdit} callback={this.fetch}
+					ref="catDialog" type="PACKAGE" obj={this.state.obj} isEdit={this.state.isEdit} callback={this.fetch}
 				/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default CatList;

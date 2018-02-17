@@ -3,9 +3,10 @@ import {Tag, Table, message, Popconfirm} from 'antd';
 import Ajax from '../../util/Ajax';
 import CommonUtil from '../../util/CommonUtil';
 
-const NewOrderList = React.createClass({
-	getInitialState() {
-		return {
+class NewOrderList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			data: [],
 			pagination: {
 				current: 1,
@@ -13,10 +14,16 @@ const NewOrderList = React.createClass({
 			},
 			loading: true
 		};
-	},
+
+		this.fetch = this.fetch.bind(this);
+		this.handleTableChange = this.handleTableChange.bind(this);
+		this.onCancel = this.onCancel.bind(this);
+	}
+
 	componentWillMount() {
 		this.fetch();
-	},
+	}
+
 	fetch() {
 		this.setState({
 			loading: true
@@ -46,7 +53,7 @@ const NewOrderList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	handleTableChange(pagination, filters, sorter) {
 		const pager = this.state.pagination;
@@ -56,25 +63,7 @@ const NewOrderList = React.createClass({
 		}, () => {
 			this.fetch();
 		});
-	},
-
-	onComplete(record) {
-		Ajax({
-			url: '/ice/pc/order/complete.json',
-			method: 'post',
-			param: {
-				id: record.id
-			},
-			callback: (result) => {
-				if (result.success) {
-					message.success('操作成功');
-					this.fetch();
-				} else {
-
-				}
-			},
-		});
-	},
+	}
 
 	onCancel(record) {
 		Ajax({
@@ -92,7 +81,7 @@ const NewOrderList = React.createClass({
 				}
 			},
 		});
-	},
+	}
 
 	render() {
 		const expandedRowRender = (data) => {
@@ -148,11 +137,6 @@ const NewOrderList = React.createClass({
 				width: '140px',
 				render: (text, record) => (
 					<span>
-						<Popconfirm title="确定完成吗?" onConfirm={this.onComplete.bind(this, record)}
-												okText="是" cancelText="否">
-									<a>订单完成</a>
-								</Popconfirm>
-						<span className="ant-divider"/>
 						<Popconfirm title="确定要取消吗?" onConfirm={this.onCancel.bind(this, record)}
 												okText="是" cancelText="否">
 									<a>取消</a>
@@ -176,7 +160,7 @@ const NewOrderList = React.createClass({
 					bordered/>
 			</div>
 		);
-	},
-});
+	}
+};
 
 export default NewOrderList;

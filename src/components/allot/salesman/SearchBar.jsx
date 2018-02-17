@@ -6,15 +6,20 @@ const Option = Select.Option;
 
 import DistrictDialog from './SalesmanDialog';
 
-const SearchBar = React.createClass({
-	getInitialState() {
-		return {};
-	},
+class SearchBar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
+
+		this.handleReset = this.handleReset.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.newDistrict = this.newDistrict.bind(this);
+	}
 
 	handleReset(e) {
 		e.preventDefault();
 		this.props.form.resetFields();
-	},
+	}
 
 	handleSubmit(e) {
 		e && e.preventDefault();
@@ -26,18 +31,18 @@ const SearchBar = React.createClass({
 
 			this.props.callback(values);
 		});
-	},
+	}
 
 	newDistrict() {
 		this.refs.districtDialog.showModal(true);
-	},
+	}
 
 	render() {
 		const {getFieldDecorator} = this.props.form;
 
 		return (
 			<span>
-        <Form horizontal className="ant-advanced-search-form">
+        <Form className="ant-advanced-search-form">
           <Row gutter={16}>
             <Col sm={8}>
               <FormItem
@@ -84,7 +89,7 @@ const SearchBar = React.createClass({
 												ref="districtDialog" callback={this.props.callback}/>
       </span>
 		);
-	},
-});
+	}
+};
 
 export default Form.create()(SearchBar);
