@@ -25,7 +25,6 @@ class CommodityForm extends React.Component {
 			pricePi,
 			priceBr,
 			brandData: [],
-			pricCatData: [],
 			packCatData: []
 		};
 
@@ -44,18 +43,6 @@ class CommodityForm extends React.Component {
 				if (result.success) {
 					this.setState({
 						brandData: result.data
-					});
-				} else { }
-			},
-		});
-
-		Ajax({
-			url: '/ice/pc/cat/queryPriceList.json?',
-			param: {},
-			callback: (result) => {
-				if (result.success) {
-					this.setState({
-						pricCatData: result.data
 					});
 				} else { }
 			},
@@ -233,22 +220,6 @@ class CommodityForm extends React.Component {
 										<Input placeholder="输入条形码" size="default"/>
 									)}
 								</FormItem>
-								<FormItem
-									label="价格分类"
-									labelCol={{span: 8}}
-									wrapperCol={{span: 14}}
-								>
-									{getFieldDecorator('pricCatId')(
-										<Select placeholder="请选择所属价格分类">
-											<Option value={0}>无</Option>
-											{
-												this.state.pricCatData.map(item => {
-													return <Option value={item.id}>{item.name}</Option>
-												})
-											}
-										</Select>
-									)}
-								</FormItem>
 							</Col>
 							<Col span={10}>
 								<FormItem
@@ -390,9 +361,6 @@ export default Form.create({
 			}),
 			desc: Form.createFormField({
 				value: com.desc || '',
-			}),
-			pricCatId: Form.createFormField({
-				value: com.pricCatId || 0,
 			}),
 			packCatId: Form.createFormField({
 				value: com.packCatId || 0,

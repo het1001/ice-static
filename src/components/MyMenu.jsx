@@ -52,7 +52,6 @@ class MyMenu extends React.Component {
 			>
 				<SubMenu key="sub1" title={<span><Icon type="appstore-o"/><span>商品管理</span></span>}>
 					<Menu.Item key="brand_cat"><Icon type="bars"/>品牌管理</Menu.Item>
-					<Menu.Item key="price_cat"><Icon type="bars"/>价格类型管理</Menu.Item>
 					<Menu.Item key="pack_cat"><Icon type="bars"/>包装类型管理</Menu.Item>
 					<Menu.Item key="commodity_list"><Icon type="bars"/>商品管理</Menu.Item>
 					<Menu.Item key="promotion_list"><Icon type="calculator"/>促销管理</Menu.Item>
