@@ -1,74 +1,80 @@
 import React from 'react';
-import { Form, Row, Col, Icon, Button, DatePicker } from 'antd';
+import {Form, Row, Col, Icon, Button, DatePicker} from 'antd';
+
 const RangePicker = DatePicker.RangePicker;
 const FormItem = Form.Item;
 import ComInDialog from './ComInDialog';
 
-const SearchBar = React.createClass({
-  getInitialState() {
-    return {
-    };
-  },
+class SearchBar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
 
-  newComIn() {
-    this.refs.comInDialog.showModal();
-  },
+		this.newComIn = this.newComIn.bind(this);
+		this.handleReset = this.handleReset.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 
-  handleReset(e) {
-    e.preventDefault();
-    this.props.form.resetFields();
-  },
+	newComIn() {
+		this.refs.comInDialog.showModal();
+	}
 
-  handleSubmit(e) {
-    e.preventDefault();
-    this.props.form.validateFields((errors, values) => {
-      if (errors) {
-        console.log('Errors in form!!!', errors);
-        return;
-      }
+	handleReset(e) {
+		e.preventDefault();
+		this.props.form.resetFields();
+	}
 
-      if (values.time) {
-        values.fromTime = values.time[0].format("YYYY-MM-DD");
-        values.endTime = values.time[1].format("YYYY-MM-DD");
-      }
+	handleSubmit(e) {
+		e.preventDefault();
+		this.props.form.validateFields((errors, values) => {
+			if (errors) {
+				console.log('Errors in form!!!', errors);
+				return;
+			}
 
-      this.props.callback(values);
-    });
-  },
+			if (values.time) {
+				values.fromTime = values.time[0].format("YYYY-MM-DD");
+				values.endTime = values.time[1].format("YYYY-MM-DD");
+			}
 
-  render() {
-    const { getFieldDecorator } = this.props.form;
+			this.props.callback(values);
+		});
+	}
 
-    return (
-      <span>
-        <Form horizontal className="ant-advanced-search-form" >
+	render() {
+		const {getFieldDecorator} = this.props.form;
+
+		return (
+			<span>
+        <Form className="ant-advanced-search-form">
           <Row gutter={16}>
             <Col sm={10}>
               <FormItem
-                label="时间范围"
-                labelCol={{ span: 10 }}
-                wrapperCol={{ span: 14 }}
-              >
+								label="时间范围"
+								labelCol={{span: 10}}
+								wrapperCol={{span: 14}}
+							>
                 {getFieldDecorator('time')(
-                  <RangePicker />
-                )}
+									<RangePicker/>
+								)}
               </FormItem>
             </Col>
           </Row>
           <Row>
-            <Col span={2} offset={1} style={{ textAlign: 'right' }}>
-              <Button type="primary" style={{ marginRight: '30px' }} onClick={this.newComIn}>进货</Button>
+            <Col span={2} offset={1} style={{textAlign: 'right'}}>
+              <Button type="primary" style={{marginRight: '30px'}} onClick={this.newComIn}>进货</Button>
             </Col>
-            <Col span={10} offset={3} style={{ textAlign: 'right' }}>
-              <Button type="primary" style={{ marginRight: '30px' }} htmlType="submit" onClick={this.handleSubmit} >搜索</Button>
+            <Col span={10} offset={3} style={{textAlign: 'right'}}>
+              <Button type="primary" style={{marginRight: '30px'}} htmlType="submit"
+											onClick={this.handleSubmit}>搜索</Button>
               <Button onClick={this.handleReset}>重置</Button>
             </Col>
           </Row>
         </Form>
-        <ComInDialog ref="comInDialog" type="new" com={{}} callback={this.props.callback} />
+        <ComInDialog ref="comInDialog" type="new" com={{}} callback={this.props.callback}/>
       </span>
-    );
-  },
-});
+		);
+	}
+};
 
 export default Form.create()(SearchBar);
